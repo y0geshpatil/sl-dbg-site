@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>sl-dbg — the stateless debugger CLI for AI agents and humans</title>
+  <meta name="description" content="A stateless, DAP-backed debugger CLI you can drive from a shell, a CI job, or an MCP-aware AI agent. Python, Go, Java — one tool, JSON in and out." />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="sl-dbg — debugger CLI for AI agents and humans" />
+  <meta property="og:description" content="One stateless CLI. Drive Python, Go, and Java debuggers from a shell or an AI agent. JSON in, JSON out." />
+  <meta property="og:url" content="https://y0geshpatil.github.io/sl-dbg-site/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2310b981'/%3E%3Ctext x='32' y='44' font-family='ui-monospace,monospace' font-size='34' font-weight='800' text-anchor='middle' fill='%23052016'%3E_%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top">
+        <span class="brand-mark">_</span>
+        <span class="brand-name">sl-dbg</span>
+      </a>
+      <div class="nav-links">
+        <a href="#why">Why</a>
+        <a href="#install">Install</a>
+        <a href="#quickstart">Quickstart</a>
+        <a href="#agents">Agents</a>
+        <a href="#commands">Reference</a>
+        <a class="nav-cta" href="#install">Get started →</a>
+      </div>
+    </div>
+  </nav>
+
+  <header id="top" class="hero">
+    <div class="grid-bg" aria-hidden="true"></div>
+    <div class="wrap hero-inner">
+      <div class="pill">
+        <span class="pill-dot"></span>
+        Now shipping · Python · Go · Java
+      </div>
+      <h1>
+        Stateless debugger CLI<br />
+        for <span class="hl">AI agents</span> and <span class="hl">humans</span>.
+      </h1>
+      <p class="lede">
+        One small tool that drives any DAP-compatible debugger from a shell, a CI job, or an MCP agent.
+        Every command is a single round-trip. JSON in, JSON out. No GUI, no IDE, no long-lived REPL.
+      </p>
+
+      <div class="cta-row">
+        <a class="btn primary" href="#install">Install in 30 seconds</a>
+        <a class="btn ghost" href="#quickstart">See it work</a>
+      </div>
+
+      <div class="hero-snippet" role="region" aria-label="Install command">
+        <div class="snippet-head">
+          <span class="snippet-dot red"></span>
+          <span class="snippet-dot yel"></span>
+          <span class="snippet-dot grn"></span>
+          <span class="snippet-title">your-terminal — bash</span>
+          <button class="copy" data-copy="curl -fsSL https://y0geshpatil.github.io/sl-dbg-site/install.sh | bash">Copy</button>
+        </div>
+<pre><code><span class="prompt">$</span> curl -fsSL https://y0geshpatil.github.io/sl-dbg-site/install.sh | bash
+<span class="dim">==&gt; sl-dbg v0.1.0 (darwin/arm64)
+==&gt; downloading sl-dbg_0.1.0_darwin_arm64.tar.gz
+==&gt; installed sl-dbg v0.1.0</span></code></pre>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section id="why" class="band">
+      <div class="wrap">
+        <p class="eyebrow">Why sl-dbg</p>
+        <h2>Debuggers were built for humans staring at an IDE. AI agents need something else.</h2>
+        <p class="lede sm">
+          Modern coding agents can read code and write patches, but until now they could not actually <em>run</em> a debugger.
+          sl-dbg fixes that. The same tool that ships JSON to an LLM also drops a clean breakpoint workflow into your terminal.
+        </p>
+
+        <div class="cards">
+          <div class="card">
+            <div class="card-icon">⚡</div>
+            <h3>Stateless wire protocol</h3>
+            <p>No REPL, no session juggling. Each command is one short round-trip the agent (or you) can retry, log, and reason about.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">{ }</div>
+            <h3>JSON everywhere</h3>
+            <p>Structured input, structured output. Easy to script, easy for an LLM to consume, never a screen-scrape.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">⇄</div>
+            <h3>Built on DAP</h3>
+            <p>Reuses the same Debug Adapter Protocol VS Code uses, so it speaks to mature, well-tested adapters out of the box.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">★</div>
+            <h3>MCP-native</h3>
+            <p>Every command is exposed as a Model Context Protocol tool. Drop it into Claude Desktop, Cursor, or Continue in one line.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">⌘</div>
+            <h3>Daemon-backed</h3>
+            <p>A tiny local daemon keeps debug sessions alive across invocations, so successive commands stay fast and stateful where it matters.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">∅</div>
+            <h3>Zero footprint</h3>
+            <p>Single static binary. No Python or JVM on the host; language adapters install on demand.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="install" class="band alt">
+      <div class="wrap">
+        <p class="eyebrow">Install</p>
+        <h2>One curl. No PAT. No ceremony.</h2>
+        <p class="lede sm">
+          Release binaries live in the public mirror
+          <a href="https://github.com/y0geshpatil/sl-dbg-releases" target="_blank" rel="noopener">y0geshpatil/sl-dbg-releases</a>,
+          so installation needs no GitHub login — even though the source repo stays private.
+        </p>
+
+        <div class="tabs" role="tablist" aria-label="Install method">
+          <button class="tab active" data-tab="curl" role="tab" aria-selected="true">curl</button>
+          <button class="tab" data-tab="version" role="tab">Pin a version</button>
+          <button class="tab" data-tab="local" role="tab">User-local</button>
+          <button class="tab" data-tab="manual" role="tab">Direct download</button>
+        </div>
+
+        <div class="tab-panes">
+          <div class="tab-pane active" data-pane="curl">
+            <div class="snippet">
+              <div class="snippet-head"><span class="snippet-title">install.sh — recommended</span><button class="copy" data-copy="curl -fsSL https://y0geshpatil.github.io/sl-dbg-site/install.sh | bash">Copy</button></div>
+<pre><code><span class="prompt">$</span> curl -fsSL https://y0geshpatil.github.io/sl-dbg-site/install.sh | bash</code></pre>
+            </div>
+            <p class="muted">Auto-detects macOS/Linux × amd64/arm64. Falls back to <code>sudo</code> only if the target directory is not writable.</p>
+          </div>
+
+          <div class="tab-pane" data-pane="version">
+            <div class="snippet">
+              <div class="snippet-head"><span class="snippet-title">install.sh — pin v0.1.0</span><button class="copy" data-copy="curl -fsSL https://y0geshpatil.github.io/sl-dbg-site/install.sh | bash -s -- v0.1.0">Copy</button></div>
+<pre><code><span class="prompt">$</span> curl -fsSL https://y0geshpatil.github.io/sl-dbg-site/install.sh | bash -s -- v0.1.0</code></pre>
+            </div>
+            <p class="muted">Useful for CI pinning and reproducible environments.</p>
+          </div>
+
+          <div class="tab-pane" data-pane="local">
+            <div class="snippet">
+              <div class="snippet-head"><span class="snippet-title">install.sh — no sudo</span><button class="copy" data-copy="INSTALL_DIR=$HOME/.local/bin curl -fsSL https://y0geshpatil.github.io/sl-dbg-site/install.sh | bash">Copy</button></div>
+<pre><code><span class="prompt">$</span> INSTALL_DIR=$HOME/.local/bin \
+    curl -fsSL https://y0geshpatil.github.io/sl-dbg-site/install.sh | bash</code></pre>
+            </div>
+            <p class="muted">Make sure <code>$HOME/.local/bin</code> is on your <code>PATH</code>.</p>
+          </div>
+
+          <div class="tab-pane" data-pane="manual">
+            <div class="snippet">
+              <div class="snippet-head"><span class="snippet-title">manual tarball</span><button class="copy" data-copy="https://github.com/y0geshpatil/sl-dbg-releases/releases/latest">Copy URL</button></div>
+<pre><code><span class="dim"># 1. Grab the tarball for your OS/arch from:</span>
+<span class="hlink">https://github.com/y0geshpatil/sl-dbg-releases/releases/latest</span>
+
+<span class="dim"># 2. Extract and put on PATH:</span>
+<span class="prompt">$</span> tar -xzf sl-dbg_*_darwin_arm64.tar.gz
+<span class="prompt">$</span> sudo mv sl-dbg /usr/local/bin/</code></pre>
+            </div>
+            <p class="muted">No checksum hassle — every release ships a SHA-256 file you can verify before extracting.</p>
+          </div>
+        </div>
+
+        <div class="adapters">
+          <h3>Install language adapters</h3>
+          <p class="muted">No adapter is bundled. They live in their own ecosystems and you only install the ones you need.</p>
+          <div class="adapter-grid">
+            <div class="adapter">
+              <div class="adapter-lang">Python</div>
+              <code>sl-dbg install-adapter python</code>
+              <p>Wraps <code>debugpy</code>. Installed via <code>pip install --user</code>.</p>
+            </div>
+            <div class="adapter">
+              <div class="adapter-lang">Go</div>
+              <code>sl-dbg install-adapter go</code>
+              <p>Wraps <code>dlv dap</code>. Installed via <code>go install</code>.</p>
+            </div>
+            <div class="adapter">
+              <div class="adapter-lang">Java</div>
+              <code>sl-dbg install-adapter java</code>
+              <p>Bundled DAP launcher. Needs an existing JDK 11+ on PATH.</p>
+            </div>
+            <div class="adapter all">
+              <div class="adapter-lang">All</div>
+              <code>sl-dbg install-adapter all</code>
+              <p>One-shot — installs every adapter above.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="quickstart" class="band">
+      <div class="wrap">
+        <p class="eyebrow">Quickstart</p>
+        <h2>From zero to a paused breakpoint in two commands.</h2>
+
+        <div class="example">
+          <div class="example-title">Debug a Python script</div>
+          <div class="snippet">
+            <div class="snippet-head"><span class="snippet-title">python — local launch</span><button class="copy" data-copy="sl-dbg start --lang python --program ./app.py --stop-on-entry
+sl-dbg break app.py:42
+sl-dbg continue
+sl-dbg locals
+sl-dbg eval &quot;user.email&quot;">Copy</button></div>
+<pre><code><span class="prompt">$</span> sl-dbg start --lang python --program ./app.py --stop-on-entry
+<span class="dim">{"ok":true,"session":"a1b2","state":"paused","location":{"file":"app.py","line":1}}</span>
+<span class="prompt">$</span> sl-dbg break app.py:42
+<span class="prompt">$</span> sl-dbg continue
+<span class="prompt">$</span> sl-dbg locals
+<span class="dim">{"variables":[{"name":"user","value":"User(id=7, email='...')","type":"User"}, ...]}</span>
+<span class="prompt">$</span> sl-dbg eval "user.email"</code></pre>
+          </div>
+        </div>
+
+        <div class="example">
+          <div class="example-title">Attach to a running JVM</div>
+          <div class="snippet">
+            <div class="snippet-head"><span class="snippet-title">java — attach to JDWP</span><button class="copy" data-copy="sl-dbg attach --lang java --host 127.0.0.1 --port 5005
+sl-dbg break com.example.OrderService:128
+sl-dbg threads
+sl-dbg stack">Copy</button></div>
+<pre><code><span class="prompt">$</span> sl-dbg attach --lang java --host 127.0.0.1 --port 5005
+<span class="prompt">$</span> sl-dbg break com.example.OrderService:128
+<span class="prompt">$</span> sl-dbg threads
+<span class="prompt">$</span> sl-dbg stack</code></pre>
+          </div>
+        </div>
+
+        <div class="example">
+          <div class="example-title">Debug Go with Delve</div>
+          <div class="snippet">
+            <div class="snippet-head"><span class="snippet-title">go — package debug</span><button class="copy" data-copy="sl-dbg start --lang go --program ./cmd/server --stop-on-entry
+sl-dbg break-fn main.handleRequest
+sl-dbg continue">Copy</button></div>
+<pre><code><span class="prompt">$</span> sl-dbg start --lang go --program ./cmd/server --stop-on-entry
+<span class="prompt">$</span> sl-dbg break-fn main.handleRequest
+<span class="prompt">$</span> sl-dbg continue</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="agents" class="band alt">
+      <div class="wrap">
+        <p class="eyebrow">For AI agents</p>
+        <h2>Drop sl-dbg into Claude Desktop, Cursor, or any MCP client.</h2>
+        <p class="lede sm">
+          sl-dbg speaks Model Context Protocol over stdio. Every CLI command is also an MCP tool — so the same operations work from a terminal and from an agent loop, with identical semantics.
+        </p>
+
+        <div class="two-col">
+          <div>
+            <h3>1 · Add to your MCP config</h3>
+            <div class="snippet">
+              <div class="snippet-head"><span class="snippet-title">~/.config/mcp/servers.json</span><button class="copy" data-copy='{
+  "mcpServers": {
+    "sl-dbg": { "command": "sl-dbg", "args": ["mcp"] }
+  }
+}'>Copy</button></div>
+<pre><code>{
+  <span class="key">"mcpServers"</span>: {
+    <span class="key">"sl-dbg"</span>: {
+      <span class="key">"command"</span>: <span class="str">"sl-dbg"</span>,
+      <span class="key">"args"</span>: [<span class="str">"mcp"</span>]
+    }
+  }
+}</code></pre>
+            </div>
+          </div>
+
+          <div>
+            <h3>2 · Sandbox untrusted agents</h3>
+            <div class="snippet">
+              <div class="snippet-head"><span class="snippet-title">safe defaults</span><button class="copy" data-copy="sl-dbg mcp --read-only
+sl-dbg mcp --allow-cwd /repo --deny-program rm">Copy</button></div>
+<pre><code><span class="prompt">$</span> sl-dbg mcp --read-only
+<span class="prompt">$</span> sl-dbg mcp \
+    --allow-cwd /repo \
+    --deny-program rm</code></pre>
+            </div>
+            <p class="muted"><code>--read-only</code> hides every mutating tool. <code>--allow-cwd</code> / <code>--deny-program</code> gate <code>debug_start</code> and <code>debug_attach</code> with <code>POLICY_DENIED</code> before they reach the daemon.</p>
+          </div>
+        </div>
+
+        <div class="resources">
+          <h3>What an agent sees</h3>
+          <ul class="bullets">
+            <li><strong>Tools</strong> — every CLI command (start, attach, break, continue, locals, eval, watch, …) with a strict input schema.</li>
+            <li><strong>Resources</strong> — <code>sl-dbg://sessions</code>, <code>sl-dbg://events</code>, <code>sl-dbg://adapters</code> for live state without spending a tool call.</li>
+            <li><strong>Prompts</strong> — turnkey templates like <code>diagnose_loop_bug</code>, <code>trace_call_path</code>, <code>watch_then_continue</code>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="commands" class="band">
+      <div class="wrap">
+        <p class="eyebrow">Reference</p>
+        <h2>The full command surface, at a glance.</h2>
+
+        <div class="cmd-grid">
+          <div class="cmd-group">
+            <h3>Lifecycle</h3>
+            <ul>
+              <li><code>start</code> — launch a program under the debugger</li>
+              <li><code>attach</code> — attach to a running process or DAP server</li>
+              <li><code>stop</code> — terminate a session</li>
+              <li><code>restart</code> — restart the current session</li>
+              <li><code>sessions</code> — list active sessions</li>
+            </ul>
+          </div>
+          <div class="cmd-group">
+            <h3>Breakpoints</h3>
+            <ul>
+              <li><code>break</code> — set line breakpoint (<code>file:line</code> or <code>Class:line</code>)</li>
+              <li><code>break-fn</code> — set function breakpoint</li>
+              <li><code>breaks</code> — list breakpoints + hit counts</li>
+              <li><code>unbreak</code> — remove breakpoint(s) by id</li>
+              <li><code>--if</code>, <code>--hit</code>, <code>--log</code>, <code>--once</code> modifiers</li>
+            </ul>
+          </div>
+          <div class="cmd-group">
+            <h3>Stepping</h3>
+            <ul>
+              <li><code>continue</code> — resume execution</li>
+              <li><code>step</code> — step over</li>
+              <li><code>step-in</code> · <code>step-out</code></li>
+              <li><code>until file:line</code> — run until a line</li>
+              <li><code>pause</code> — break a running program</li>
+            </ul>
+          </div>
+          <div class="cmd-group">
+            <h3>Inspection</h3>
+            <ul>
+              <li><code>stack</code> · <code>threads</code></li>
+              <li><code>locals</code> · <code>globals</code></li>
+              <li><code>eval</code> · <code>set</code></li>
+              <li><code>print</code> — pretty-printed deep inspect</li>
+              <li><code>fields</code> — drill into a variable ref</li>
+              <li><code>snapshot</code> — full pause snapshot</li>
+            </ul>
+          </div>
+          <div class="cmd-group">
+            <h3>Watches &amp; events</h3>
+            <ul>
+              <li><code>watch add</code> · <code>watch eval</code> · <code>watch list</code></li>
+              <li><code>events</code> — recent DAP events</li>
+              <li><code>output</code> — captured stdout/stderr from debuggee</li>
+              <li>Watches are persisted across sessions for the same program.</li>
+            </ul>
+          </div>
+          <div class="cmd-group">
+            <h3>Meta</h3>
+            <ul>
+              <li><code>adapters</code> — list installed adapters</li>
+              <li><code>install-adapter &lt;lang|all&gt;</code></li>
+              <li><code>daemon stop|status|logs</code></li>
+              <li><code>version</code></li>
+              <li><code>mcp</code> — speak MCP over stdio</li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="muted center">
+          Every command returns JSON. Run any of them with <code>--help</code> for the full flag set.
+        </p>
+      </div>
+    </section>
+
+    <section id="platforms" class="band alt">
+      <div class="wrap narrow">
+        <p class="eyebrow">Supported platforms</p>
+        <h2>Two OSes. Two architectures. One static binary each.</h2>
+        <table class="platforms">
+          <thead><tr><th>OS</th><th>Architectures</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>macOS 12+</td><td>amd64, arm64 (Apple silicon)</td><td><span class="ok">Tier 1</span></td></tr>
+            <tr><td>Linux (glibc 2.31+)</td><td>amd64, arm64</td><td><span class="ok">Tier 1</span></td></tr>
+            <tr><td>Windows</td><td>—</td><td><span class="warn">Not supported — open an issue if you need it</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="faq" class="band">
+      <div class="wrap narrow">
+        <p class="eyebrow">FAQ</p>
+        <h2>Honest answers.</h2>
+
+        <details>
+          <summary>Is the source code open?</summary>
+          <p>No — the source repo is currently private. Only the prebuilt binary is distributed (Apache-2.0 licensed). The release tarball is identical to what you'd get from <code>go build</code> on the source, with <code>-s -w</code> ldflags to strip symbols.</p>
+        </details>
+
+        <details>
+          <summary>Do I need a GitHub account to install?</summary>
+          <p>No. Releases live in the public mirror <code>y0geshpatil/sl-dbg-releases</code>, so <code>curl | bash</code> works anonymously.</p>
+        </details>
+
+        <details>
+          <summary>What state lives on disk?</summary>
+          <p>Just a small daemon log, watch-expression cache, and ring-buffered event logs under <code>$XDG_STATE_HOME/sl-dbg</code> (defaults to <code>~/.local/state/sl-dbg</code>). Safe to delete any time.</p>
+        </details>
+
+        <details>
+          <summary>What if my <code>SESSION_NOT_FOUND</code> errors come and go?</summary>
+          <p>The daemon respawned — sl-dbg now returns a dedicated <code>DAEMON_RESPAWNED</code> code with a hint to re-launch the session. Common after a host sleep or reboot.</p>
+        </details>
+
+        <details>
+          <summary>How do I uninstall?</summary>
+          <p><code>rm "$(which sl-dbg)"</code> removes the binary. <code>rm -rf ~/.local/state/sl-dbg</code> removes cached state.</p>
+        </details>
+
+        <details>
+          <summary>Can I run multiple sessions at once?</summary>
+          <p>Yes. Sessions get short IDs; pass <code>--sess &lt;id&gt;</code> on any command to target a specific one. Most commands also support a default session so you usually don't need to.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="band cta-band">
+      <div class="wrap narrow center">
+        <h2>Ready to give your terminal — and your agents — a real debugger?</h2>
+        <div class="cta-row center">
+          <a class="btn primary" href="#install">Install in 30 seconds</a>
+          <a class="btn ghost" href="https://github.com/y0geshpatil/sl-dbg-releases/releases" target="_blank" rel="noopener">Browse releases →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div>
+        <div class="brand small"><span class="brand-mark">_</span><span class="brand-name">sl-dbg</span></div>
+        <p class="muted">Apache-2.0 · maintained by <a href="https://github.com/y0geshpatil" target="_blank" rel="noopener">@y0geshpatil</a></p>
+      </div>
+      <div class="foot-cols">
+        <div>
+          <h4>Docs</h4>
+          <a href="#install">Install</a>
+          <a href="#quickstart">Quickstart</a>
+          <a href="#commands">Reference</a>
+        </div>
+        <div>
+          <h4>Releases</h4>
+          <a href="https://github.com/y0geshpatil/sl-dbg-releases/releases" target="_blank" rel="noopener">Latest</a>
+          <a href="install.sh">install.sh</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
