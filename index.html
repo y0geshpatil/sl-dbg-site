@@ -266,22 +266,17 @@ sl-dbg continue">Copy</button></div>
 
         <div class="two-col">
           <div>
-            <h3>1 · Add to your MCP config</h3>
+            <h3>1 · Register with one command</h3>
             <div class="snippet">
-              <div class="snippet-head"><span class="snippet-title">~/.config/mcp/servers.json</span><button class="copy" data-copy='{
-  "mcpServers": {
-    "sl-dbg": { "command": "sl-dbg", "args": ["mcp"] }
-  }
-}'>Copy</button></div>
-<pre><code>{
-  <span class="key">"mcpServers"</span>: {
-    <span class="key">"sl-dbg"</span>: {
-      <span class="key">"command"</span>: <span class="str">"sl-dbg"</span>,
-      <span class="key">"args"</span>: [<span class="str">"mcp"</span>]
-    }
-  }
-}</code></pre>
+              <div class="snippet-head"><span class="snippet-title">install for your agent</span><button class="copy" data-copy="sl-dbg mcp install claude    # or: cursor | vscode | codex | copilot | all">Copy</button></div>
+<pre><code><span class="prompt">$</span> sl-dbg mcp install claude   <span class="dim"># Claude Desktop</span>
+<span class="prompt">$</span> sl-dbg mcp install cursor   <span class="dim"># Cursor</span>
+<span class="prompt">$</span> sl-dbg mcp install vscode   <span class="dim"># .vscode/mcp.json in cwd</span>
+<span class="prompt">$</span> sl-dbg mcp install codex    <span class="dim"># Codex CLI (~/.codex/config.toml)</span>
+<span class="prompt">$</span> sl-dbg mcp install copilot  <span class="dim"># GitHub Copilot CLI</span>
+<span class="prompt">$</span> sl-dbg mcp install all      <span class="dim"># every detected agent</span></code></pre>
             </div>
+            <p class="muted">Safe read–merge–write with a timestamped <code>.bak</code> backup. Pass <code>--dry-run</code> to preview, <code>--force</code> to overwrite, or <code>--print</code> to dump the snippet without touching files.</p>
           </div>
 
           <div>
