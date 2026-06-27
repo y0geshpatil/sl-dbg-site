@@ -134,6 +134,7 @@
           <button class="tab" data-tab="version" role="tab">Pin a version</button>
           <button class="tab" data-tab="local" role="tab">User-local</button>
           <button class="tab" data-tab="manual" role="tab">Direct download</button>
+          <button class="tab" data-tab="uninstall" role="tab">Uninstall</button>
         </div>
 
         <div class="tab-panes">
@@ -173,6 +174,22 @@
 <span class="prompt">$</span> sudo mv sl-dbg /usr/local/bin/</code></pre>
             </div>
             <p class="muted">No checksum hassle — every release ships a SHA-256 file you can verify before extracting.</p>
+          </div>
+
+          <div class="tab-pane" data-pane="uninstall">
+            <div class="snippet">
+              <div class="snippet-head"><span class="snippet-title">remove everything we added</span><button class="copy" data-copy="curl -fsSL https://y0geshpatil.github.io/sl-dbg-site/uninstall.sh | bash">Copy</button></div>
+<pre><code><span class="dim"># Removes the binary AND the sl-dbg entry from every detected agent's MCP config.</span>
+<span class="prompt">$</span> curl -fsSL <span class="hlink">https://y0geshpatil.github.io/sl-dbg-site/uninstall.sh</span> | bash
+
+<span class="dim"># Only the binary, keep MCP entries:</span>
+<span class="prompt">$</span> curl -fsSL <span class="hlink">https://y0geshpatil.github.io/sl-dbg-site/uninstall.sh</span> | bash -s -- --keep-mcp
+
+<span class="dim"># Or, surgically, just one agent:</span>
+<span class="prompt">$</span> sl-dbg mcp uninstall claude   <span class="dim"># or cursor | vscode | codex | copilot | all</span>
+<span class="prompt">$</span> sl-dbg mcp uninstall all --dry-run   <span class="dim"># preview first</span></code></pre>
+            </div>
+            <p class="muted">The uninstaller removes only the <code>sl-dbg</code> server entry — every sibling MCP server in your config is preserved. A timestamped <code>.bak</code> of each modified file is kept next to the original.</p>
           </div>
         </div>
 
@@ -420,7 +437,7 @@ sl-dbg mcp --allow-cwd /repo --deny-program rm">Copy</button></div>
 
         <details>
           <summary>How do I uninstall?</summary>
-          <p><code>rm "$(which sl-dbg)"</code> removes the binary. <code>rm -rf ~/.local/state/sl-dbg</code> removes cached state.</p>
+          <p>One-liner: <code>curl -fsSL https://y0geshpatil.github.io/sl-dbg-site/uninstall.sh | bash</code>. That removes the binary <em>and</em> the <code>sl-dbg</code> entry from every detected agent's MCP config (with a <code>.bak</code> of each modified file). To skip the MCP cleanup, append <code>-s -- --keep-mcp</code>. To target a single agent: <code>sl-dbg mcp uninstall claude</code> (or <code>cursor</code> / <code>vscode</code> / <code>codex</code> / <code>copilot</code> / <code>all</code>). Cached state lives under <code>~/.local/state/sl-dbg</code> and is safe to <code>rm -rf</code>.</p>
         </details>
 
         <details>
