@@ -1,6 +1,6 @@
 # sl-dbg MCP server reference
 
-Auto-generated from a live `sl-dbg mcp` introspection on **2026-06-27** (server `sl-dbg` v`v0.3.0-6-g976cb0f`).
+Auto-generated from a live `sl-dbg mcp` introspection on **2026-06-27** (server `sl-dbg` v`v0.5.0-dirty`).
 
 > This file is the canonical contract between sl-dbg and any MCP-aware agent. Every entry below is what the agent receives from `tools/list` / `resources/list` / `prompts/list`, verbatim from the binary.
 
