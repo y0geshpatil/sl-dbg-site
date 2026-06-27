@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>sl-dbg docs</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2310b981'/%3E%3Ctext x='32' y='44' font-family='ui-monospace,monospace' font-size='34' font-weight='800' text-anchor='middle' fill='%23052016'%3E_%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .docs-shell { display: grid; grid-template-columns: 240px 1fr; gap: 40px; padding: 40px 0 80px; }
+    @media (max-width: 800px) { .docs-shell { grid-template-columns: 1fr; } }
+    .docs-side { position: sticky; top: 80px; align-self: start; border-right: 1px solid var(--border); padding-right: 24px; }
+    .docs-side h4 { margin-top: 20px; }
+    .docs-side a { display: block; padding: 5px 10px; margin: 2px -10px; color: var(--fg-dim); font-size: 14px; border-radius: 6px; }
+    .docs-side a:hover { background: var(--panel); color: var(--fg); text-decoration: none; }
+    .docs-side a.active { background: rgba(52,211,153,0.1); color: var(--accent); }
+    .docs-main { max-width: 760px; min-width: 0; }
+    .docs-main h1 { font-size: 38px; margin-top: 0; }
+    .docs-main h2 { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); font-size: 26px; }
+    .docs-main h3 { font-size: 19px; margin-top: 32px; }
+    .docs-main h4 { font-size: 15px; text-transform: none; letter-spacing: 0; color: var(--fg); margin-top: 28px; font-family: var(--mono); }
+    .docs-main p, .docs-main li { color: var(--fg-dim); }
+    .docs-main pre { background: var(--panel); border: 1px solid var(--border); border-radius: var(--r-md); padding: 16px 20px; font-size: 13px; overflow-x: auto; }
+    .docs-main pre code { background: transparent; border: 0; padding: 0; color: var(--fg); }
+    .docs-main code { background: var(--panel); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; font-family: var(--mono); font-size: 0.88em; color: var(--accent-2); }
+    .docs-main table { width: 100%; border-collapse: collapse; margin: 18px 0; background: var(--panel); border: 1px solid var(--border); border-radius: var(--r-md); overflow: hidden; font-size: 14px; }
+    .docs-main th, .docs-main td { padding: 10px 14px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+    .docs-main th { background: var(--panel-2); color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .docs-main tr:last-child td { border-bottom: 0; }
+    .docs-main blockquote { border-left: 3px solid var(--accent); margin: 0 0 18px; padding: 8px 16px; background: rgba(52,211,153,0.05); color: var(--fg-dim); border-radius: 0 6px 6px 0; }
+    .docs-main hr { border: 0; border-top: 1px solid var(--border); margin: 40px 0; }
+    .docs-main a { color: var(--link); }
+    .docs-err { padding: 60px 0; text-align: center; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="/sl-dbg-site/">
+        <span class="brand-mark">_</span>
+        <span class="brand-name">sl-dbg</span>
+      </a>
+      <div class="nav-links">
+        <a href="/sl-dbg-site/#install">Install</a>
+        <a href="/sl-dbg-site/#quickstart">Quickstart</a>
+        <a href="/sl-dbg-site/#agents">Agents</a>
+        <a href="docs.html?p=mcp" class="nav-cta">Docs</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="wrap docs-shell">
+    <aside class="docs-side">
+      <h4>Get started</h4>
+      <a data-doc="mcp">MCP server reference</a>
+      <a data-doc="agent-guide">AI agent guide</a>
+      <a data-doc="commands">CLI commands</a>
+      <a data-doc="adapters">Language adapters</a>
+
+      <h4>Operate</h4>
+      <a data-doc="configuration">Configuration</a>
+      <a data-doc="platforms">Platforms</a>
+      <a data-doc="design">Architecture</a>
+
+      <h4>Security</h4>
+      <a data-doc="security">Threat model</a>
+      <a data-doc="security-review">Audit access</a>
+    </aside>
+
+    <article id="content" class="docs-main">
+      <p class="docs-err">Loading…</p>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <a class="brand small" href="/sl-dbg-site/">
+        <span class="brand-mark">_</span>
+        <span>sl-dbg</span>
+      </a>
+      <div class="foot-cols">
+        <div>
+          <a href="https://github.com/y0geshpatil/sl-dbg-releases/releases">Releases</a>
+          <a href="docs.html?p=security-review">Security review</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+  <script>
+    (function () {
+      var content = document.getElementById('content');
+      var sideLinks = document.querySelectorAll('.docs-side a[data-doc]');
+
+      function slugify(s) {
+        return String(s || '').toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, '')
+          .trim().replace(/\s+/g, '-');
+      }
+
+      function load(name) {
+        var safe = String(name || '').replace(/[^a-z0-9\-]/gi, '');
+        if (!safe) safe = 'mcp';
+
+        sideLinks.forEach(function (a) {
+          a.classList.toggle('active', a.dataset.doc === safe);
+        });
+
+        fetch('docs/' + safe + '.md', { cache: 'no-cache' })
+          .then(function (r) {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.text();
+          })
+          .then(function (md) {
+            marked.use({
+              renderer: {
+                heading: function (text, level) {
+                  var id = slugify(text);
+                  return '<h' + level + ' id="' + id + '">' + text + '</h' + level + '>';
+                }
+              },
+              gfm: true,
+              breaks: false
+            });
+            content.innerHTML = marked.parse(md);
+            document.title = 'sl-dbg docs — ' + safe;
+            // Rewrite intra-doc .md links to use the viewer
+            content.querySelectorAll('a[href$=".md"], a[href*=".md#"]').forEach(function (a) {
+              var href = a.getAttribute('href');
+              var m = href.match(/^([a-z0-9\-]+)\.md(#.*)?$/i);
+              if (m) {
+                a.setAttribute('href', '?p=' + m[1] + (m[2] || ''));
+                a.addEventListener('click', function (e) {
+                  e.preventDefault();
+                  history.pushState({}, '', a.getAttribute('href'));
+                  route();
+                });
+              }
+            });
+            if (location.hash) {
+              var t = document.getElementById(location.hash.slice(1));
+              if (t) t.scrollIntoView();
+            } else {
+              window.scrollTo(0, 0);
+            }
+          })
+          .catch(function (e) {
+            content.innerHTML = '<p class="docs-err">Could not load <code>' + safe + '.md</code> — ' + e.message + '</p>';
+          });
+      }
+
+      function route() {
+        var params = new URLSearchParams(location.search);
+        load(params.get('p') || 'mcp');
+      }
+
+      sideLinks.forEach(function (a) {
+        a.setAttribute('href', '?p=' + a.dataset.doc);
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          history.pushState({}, '', a.getAttribute('href'));
+          route();
+        });
+      });
+
+      window.addEventListener('popstate', route);
+      route();
+    })();
+  </script>
+</body>
+</html>

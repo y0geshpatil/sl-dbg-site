@@ -30,7 +30,7 @@
         <a href="#install">Install</a>
         <a href="#quickstart">Quickstart</a>
         <a href="#agents">Agents</a>
-        <a href="#commands">Reference</a>
+        <a href="docs.html?p=mcp">Docs</a>
         <a class="nav-cta" href="#install">Get started →</a>
       </div>
     </div>
@@ -317,6 +317,9 @@ sl-dbg mcp --allow-cwd /repo --deny-program rm">Copy</button></div>
             <li><strong>Resources</strong> — <code>sl-dbg://sessions</code>, <code>sl-dbg://events</code>, <code>sl-dbg://adapters</code> for live state without spending a tool call.</li>
             <li><strong>Prompts</strong> — turnkey templates like <code>diagnose_loop_bug</code>, <code>trace_call_path</code>, <code>watch_then_continue</code>.</li>
           </ul>
+          <p class="muted" style="margin-top:14px;">
+            Full machine-readable reference: <a href="docs.html?p=mcp"><strong>MCP server docs</strong></a> · Security model: <a href="docs.html?p=security">threat model</a> · Source-level audit access: <a href="docs.html?p=security-review">request access</a>.
+          </p>
         </div>
       </div>
     </section>
@@ -426,6 +429,11 @@ sl-dbg mcp --allow-cwd /repo --deny-program rm">Copy</button></div>
         </details>
 
         <details>
+          <summary>The source is private — how can I do a security review?</summary>
+          <p>Plenty is auditable without source: signed release binaries, SHA-256 checksums, the full <a href="docs.html?p=mcp">MCP tool surface</a>, the <a href="docs.html?p=security">threat model</a>, and the install scripts. For source-level review we grant read-only repo access under a one-page NDA (see <a href="docs.html?p=security-review"><strong>Audit access</strong></a> for the process). The repo will go fully public at v1.0.0.</p>
+        </details>
+
+        <details>
           <summary>What state lives on disk?</summary>
           <p>Just a small daemon log, watch-expression cache, and ring-buffered event logs under <code>$XDG_STATE_HOME/sl-dbg</code> (defaults to <code>~/.local/state/sl-dbg</code>). Safe to delete any time.</p>
         </details>
@@ -468,14 +476,23 @@ sl-dbg mcp --allow-cwd /repo --deny-program rm">Copy</button></div>
       <div class="foot-cols">
         <div>
           <h4>Docs</h4>
-          <a href="#install">Install</a>
-          <a href="#quickstart">Quickstart</a>
-          <a href="#commands">Reference</a>
+          <a href="docs.html?p=mcp">MCP reference</a>
+          <a href="docs.html?p=agent-guide">AI agent guide</a>
+          <a href="docs.html?p=commands">CLI commands</a>
+          <a href="docs.html?p=adapters">Language adapters</a>
+          <a href="docs.html?p=configuration">Configuration</a>
+        </div>
+        <div>
+          <h4>Security</h4>
+          <a href="docs.html?p=security">Threat model</a>
+          <a href="docs.html?p=security-review">Source audit access</a>
+          <a href="mailto:security@sl-dbg.dev">security@sl-dbg.dev</a>
         </div>
         <div>
           <h4>Releases</h4>
           <a href="https://github.com/y0geshpatil/sl-dbg-releases/releases" target="_blank" rel="noopener">Latest</a>
           <a href="install.sh">install.sh</a>
+          <a href="uninstall.sh">uninstall.sh</a>
         </div>
       </div>
     </div>
