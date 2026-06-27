@@ -1,6 +1,6 @@
 # sl-dbg MCP server reference
 
-Auto-generated from a live `sl-dbg mcp` introspection on **2026-06-27** (server `sl-dbg` v`0.0.0-dev`).
+Auto-generated from a live `sl-dbg mcp` introspection on **2026-06-27** (server `sl-dbg` v`v0.3.0-6-g976cb0f`).
 
 > This file is the canonical contract between sl-dbg and any MCP-aware agent. Every entry below is what the agent receives from `tools/list` / `resources/list` / `prompts/list`, verbatim from the binary.
 
@@ -70,8 +70,9 @@ Launch a program under the debugger. lang one of python|go|java.
 | `classpath` | `string` |  | Java classpath (when lang=java) |
 | `lang` | `enum(python\|go\|java)` | ✅ | language adapter to use |
 | `mainClass` | `string` |  | Java main class (when lang=java) |
+| `name` | `string` |  | optional human-friendly id for the new session (must be unique within the daemon); auto-generated if omitted |
 | `program` | `string` | ✅ | absolute path to program or entrypoint |
-| `session` | `string` |  | optional session id; defaults to the daemon's current default (newest started) |
+| `session` | `string` |  | backward-compat alias for `name` when creating a session; not a target selector on debug_start (unlike other tools where `session` picks an existing session) |
 | `sourceRoots` | `array&lt;string&gt;` |  | source roots for path resolution |
 | `stopOnEntry` | `boolean` |  | pause at program entry |
 
@@ -83,9 +84,10 @@ Attach to a running process over DAP/JDWP.
 |---|---|---|---|
 | `host` | `string` | ✅ | hostname |
 | `lang` | `enum(python\|go\|java)` | ✅ | language adapter to use |
+| `name` | `string` |  | optional human-friendly id for the new session (must be unique within the daemon); auto-generated if omitted |
 | `pid` | `integer` |  | alternative to host:port (where supported) |
 | `port` | `integer` | ✅ | DAP/JDWP port |
-| `session` | `string` |  | optional session id; defaults to the daemon's current default (newest started) |
+| `session` | `string` |  | backward-compat alias for `name` when creating a session; not a target selector on debug_attach (unlike other tools where `session` picks an existing session) |
 | `sourceRoots` | `array&lt;string&gt;` |  | source roots |
 
 #### `debug_restart`
