@@ -8,7 +8,7 @@ private-source / NDA gate anymore — audit, fork, patch, or fuzz at will.
 | Artifact | Where |
 |---|---|
 | **Source repository** | [github.com/y0geshpatil/sl-dbg](https://github.com/y0geshpatil/sl-dbg) |
-| **Release binaries** | [github.com/y0geshpatil/sl-dbg-releases/releases](https://github.com/y0geshpatil/sl-dbg-releases/releases) |
+| **Release binaries** | [github.com/y0geshpatil/sl-dbg/releases](https://github.com/y0geshpatil/sl-dbg/releases) |
 | **Per-release SHA-256 checksums** | `sl-dbg_<version>_checksums.txt` on each release |
 | **Install scripts** | [install.sh](../install.sh) · [uninstall.sh](../uninstall.sh) |
 | **MCP tool surface** | [mcp.md](mcp.md) — auto-generated from a live binary |
