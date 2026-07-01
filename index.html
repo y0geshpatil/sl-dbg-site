@@ -31,6 +31,7 @@
         <a href="#quickstart">Quickstart</a>
         <a href="#agents">Agents</a>
         <a href="docs.html?p=mcp">Docs</a>
+        <a href="https://github.com/y0geshpatil/sl-dbg" target="_blank" rel="noopener">GitHub ↗</a>
         <a class="nav-cta" href="#install">Get started →</a>
       </div>
     </div>
@@ -124,9 +125,11 @@
         <p class="eyebrow">Install</p>
         <h2>One curl. No PAT. No ceremony.</h2>
         <p class="lede sm">
-          Release binaries live in the public mirror
+          Source lives at
+          <a href="https://github.com/y0geshpatil/sl-dbg" target="_blank" rel="noopener">y0geshpatil/sl-dbg</a>
+          (Apache-2.0); prebuilt release binaries live in the mirror
           <a href="https://github.com/y0geshpatil/sl-dbg-releases" target="_blank" rel="noopener">y0geshpatil/sl-dbg-releases</a>,
-          so installation needs no GitHub login — even though the source repo stays private.
+          so installation needs no GitHub login.
         </p>
 
         <div class="tabs" role="tablist" aria-label="Install method">
@@ -318,7 +321,7 @@ sl-dbg mcp --allow-cwd /repo --deny-program rm">Copy</button></div>
             <li><strong>Prompts</strong> — turnkey templates like <code>diagnose_loop_bug</code>, <code>trace_call_path</code>, <code>watch_then_continue</code>.</li>
           </ul>
           <p class="muted" style="margin-top:14px;">
-            Full machine-readable reference: <a href="docs.html?p=mcp"><strong>MCP server docs</strong></a> · Security model: <a href="docs.html?p=security">threat model</a> · Source-level audit access: <a href="docs.html?p=security-review">request access</a>.
+            Full machine-readable reference: <a href="docs.html?p=mcp"><strong>MCP server docs</strong></a> · Security model: <a href="docs.html?p=security">threat model</a> · Source: <a href="https://github.com/y0geshpatil/sl-dbg" target="_blank" rel="noopener">github.com/y0geshpatil/sl-dbg</a>.
           </p>
         </div>
       </div>
@@ -420,7 +423,7 @@ sl-dbg mcp --allow-cwd /repo --deny-program rm">Copy</button></div>
 
         <details>
           <summary>Is the source code open?</summary>
-          <p>No — the source repo is currently private. Only the prebuilt binary is distributed (Apache-2.0 licensed). The release tarball is identical to what you'd get from <code>go build</code> on the source, with <code>-s -w</code> ldflags to strip symbols.</p>
+          <p>Yes. Source lives at <a href="https://github.com/y0geshpatil/sl-dbg" target="_blank" rel="noopener">github.com/y0geshpatil/sl-dbg</a> under Apache-2.0. The release tarball is identical to what you'd get from <code>go build</code> on the source, with <code>-s -w</code> ldflags to strip symbols.</p>
         </details>
 
         <details>
@@ -429,8 +432,8 @@ sl-dbg mcp --allow-cwd /repo --deny-program rm">Copy</button></div>
         </details>
 
         <details>
-          <summary>The source is private — how can I do a security review?</summary>
-          <p>Plenty is auditable without source: signed release binaries, SHA-256 checksums, the full <a href="docs.html?p=mcp">MCP tool surface</a>, the <a href="docs.html?p=security">threat model</a>, and the install scripts. For source-level review we grant read-only repo access under a one-page NDA (see <a href="docs.html?p=security-review"><strong>Audit access</strong></a> for the process). The repo will go fully public at v1.0.0.</p>
+          <summary>How do I do a security review?</summary>
+          <p>Everything is auditable: source at <a href="https://github.com/y0geshpatil/sl-dbg" target="_blank" rel="noopener">github.com/y0geshpatil/sl-dbg</a>, signed release binaries with SHA-256 checksums, the full <a href="docs.html?p=mcp">MCP tool surface</a>, the <a href="docs.html?p=security">threat model</a>, and the install scripts. Please report vulnerabilities privately per <a href="https://github.com/y0geshpatil/sl-dbg/blob/main/SECURITY.md" target="_blank" rel="noopener">SECURITY.md</a> rather than filing public issues.</p>
         </details>
 
         <details>
@@ -483,9 +486,15 @@ sl-dbg mcp --allow-cwd /repo --deny-program rm">Copy</button></div>
           <a href="docs.html?p=configuration">Configuration</a>
         </div>
         <div>
+          <h4>Source</h4>
+          <a href="https://github.com/y0geshpatil/sl-dbg" target="_blank" rel="noopener">Repository</a>
+          <a href="https://github.com/y0geshpatil/sl-dbg/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing</a>
+          <a href="https://github.com/y0geshpatil/sl-dbg/issues" target="_blank" rel="noopener">Issues</a>
+        </div>
+        <div>
           <h4>Security</h4>
           <a href="docs.html?p=security">Threat model</a>
-          <a href="docs.html?p=security-review">Source audit access</a>
+          <a href="https://github.com/y0geshpatil/sl-dbg/blob/main/SECURITY.md" target="_blank" rel="noopener">SECURITY.md</a>
           <a href="mailto:security@sl-dbg.dev">security@sl-dbg.dev</a>
         </div>
         <div>
