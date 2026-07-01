@@ -64,9 +64,9 @@
           <span class="snippet-dot yel"></span>
           <span class="snippet-dot grn"></span>
           <span class="snippet-title">your-terminal — bash</span>
-          <button class="copy" data-copy="curl -fsSL https://y0geshpatil.github.io/sl-dbg-site/install.sh | bash">Copy</button>
+          <button class="copy" data-copy="curl -fsSL https://raw.githubusercontent.com/y0geshpatil/sl-dbg/main/scripts/install.sh | bash">Copy</button>
         </div>
-<pre><code><span class="prompt">$</span> curl -fsSL https://y0geshpatil.github.io/sl-dbg-site/install.sh | bash
+<pre><code><span class="prompt">$</span> curl -fsSL https://raw.githubusercontent.com/y0geshpatil/sl-dbg/main/scripts/install.sh | bash
 <span class="dim">==&gt; sl-dbg v0.1.0 (darwin/arm64)
 ==&gt; downloading sl-dbg_0.1.0_darwin_arm64.tar.gz
 ==&gt; installed sl-dbg v0.1.0</span></code></pre>
@@ -142,25 +142,25 @@
         <div class="tab-panes">
           <div class="tab-pane active" data-pane="curl">
             <div class="snippet">
-              <div class="snippet-head"><span class="snippet-title">install.sh — recommended</span><button class="copy" data-copy="curl -fsSL https://y0geshpatil.github.io/sl-dbg-site/install.sh | bash">Copy</button></div>
-<pre><code><span class="prompt">$</span> curl -fsSL https://y0geshpatil.github.io/sl-dbg-site/install.sh | bash</code></pre>
+              <div class="snippet-head"><span class="snippet-title">install.sh — recommended</span><button class="copy" data-copy="curl -fsSL https://raw.githubusercontent.com/y0geshpatil/sl-dbg/main/scripts/install.sh | bash">Copy</button></div>
+<pre><code><span class="prompt">$</span> curl -fsSL https://raw.githubusercontent.com/y0geshpatil/sl-dbg/main/scripts/install.sh | bash</code></pre>
             </div>
             <p class="muted">Auto-detects macOS/Linux × amd64/arm64. Falls back to <code>sudo</code> only if the target directory is not writable.</p>
           </div>
 
           <div class="tab-pane" data-pane="version">
             <div class="snippet">
-              <div class="snippet-head"><span class="snippet-title">install.sh — pin v0.1.0</span><button class="copy" data-copy="curl -fsSL https://y0geshpatil.github.io/sl-dbg-site/install.sh | bash -s -- v0.1.0">Copy</button></div>
-<pre><code><span class="prompt">$</span> curl -fsSL https://y0geshpatil.github.io/sl-dbg-site/install.sh | bash -s -- v0.1.0</code></pre>
+              <div class="snippet-head"><span class="snippet-title">install.sh — pin v0.1.0</span><button class="copy" data-copy="curl -fsSL https://raw.githubusercontent.com/y0geshpatil/sl-dbg/main/scripts/install.sh | bash -s -- v0.1.0">Copy</button></div>
+<pre><code><span class="prompt">$</span> curl -fsSL https://raw.githubusercontent.com/y0geshpatil/sl-dbg/main/scripts/install.sh | bash -s -- v0.1.0</code></pre>
             </div>
             <p class="muted">Useful for CI pinning and reproducible environments.</p>
           </div>
 
           <div class="tab-pane" data-pane="local">
             <div class="snippet">
-              <div class="snippet-head"><span class="snippet-title">install.sh — no sudo</span><button class="copy" data-copy="INSTALL_DIR=$HOME/.local/bin curl -fsSL https://y0geshpatil.github.io/sl-dbg-site/install.sh | bash">Copy</button></div>
+              <div class="snippet-head"><span class="snippet-title">install.sh — no sudo</span><button class="copy" data-copy="INSTALL_DIR=$HOME/.local/bin curl -fsSL https://raw.githubusercontent.com/y0geshpatil/sl-dbg/main/scripts/install.sh | bash">Copy</button></div>
 <pre><code><span class="prompt">$</span> INSTALL_DIR=$HOME/.local/bin \
-    curl -fsSL https://y0geshpatil.github.io/sl-dbg-site/install.sh | bash</code></pre>
+    curl -fsSL https://raw.githubusercontent.com/y0geshpatil/sl-dbg/main/scripts/install.sh | bash</code></pre>
             </div>
             <p class="muted">Make sure <code>$HOME/.local/bin</code> is on your <code>PATH</code>.</p>
           </div>
@@ -180,12 +180,12 @@
 
           <div class="tab-pane" data-pane="uninstall">
             <div class="snippet">
-              <div class="snippet-head"><span class="snippet-title">remove everything we added</span><button class="copy" data-copy="curl -fsSL https://y0geshpatil.github.io/sl-dbg-site/uninstall.sh | bash">Copy</button></div>
+              <div class="snippet-head"><span class="snippet-title">remove everything we added</span><button class="copy" data-copy="curl -fsSL https://raw.githubusercontent.com/y0geshpatil/sl-dbg/main/scripts/uninstall.sh | bash">Copy</button></div>
 <pre><code><span class="dim"># Removes the binary AND the sl-dbg entry from every detected agent's MCP config.</span>
-<span class="prompt">$</span> curl -fsSL <span class="hlink">https://y0geshpatil.github.io/sl-dbg-site/uninstall.sh</span> | bash
+<span class="prompt">$</span> curl -fsSL <span class="hlink">https://raw.githubusercontent.com/y0geshpatil/sl-dbg/main/scripts/uninstall.sh</span> | bash
 
 <span class="dim"># Only the binary, keep MCP entries:</span>
-<span class="prompt">$</span> curl -fsSL <span class="hlink">https://y0geshpatil.github.io/sl-dbg-site/uninstall.sh</span> | bash -s -- --keep-mcp
+<span class="prompt">$</span> curl -fsSL <span class="hlink">https://raw.githubusercontent.com/y0geshpatil/sl-dbg/main/scripts/uninstall.sh</span> | bash -s -- --keep-mcp
 
 <span class="dim"># Or, surgically, just one agent:</span>
 <span class="prompt">$</span> sl-dbg mcp uninstall claude   <span class="dim"># or cursor | vscode | codex | copilot | all</span>
@@ -447,7 +447,7 @@ sl-dbg mcp --allow-cwd /repo --deny-program rm">Copy</button></div>
 
         <details>
           <summary>How do I uninstall?</summary>
-          <p>One-liner: <code>curl -fsSL https://y0geshpatil.github.io/sl-dbg-site/uninstall.sh | bash</code>. That removes the binary <em>and</em> the <code>sl-dbg</code> entry from every detected agent's MCP config (with a <code>.bak</code> of each modified file). To skip the MCP cleanup, append <code>-s -- --keep-mcp</code>. To target a single agent: <code>sl-dbg mcp uninstall claude</code> (or <code>cursor</code> / <code>vscode</code> / <code>codex</code> / <code>copilot</code> / <code>all</code>). Cached state lives under <code>~/.local/state/sl-dbg</code> and is safe to <code>rm -rf</code>.</p>
+          <p>One-liner: <code>curl -fsSL https://raw.githubusercontent.com/y0geshpatil/sl-dbg/main/scripts/uninstall.sh | bash</code>. That removes the binary <em>and</em> the <code>sl-dbg</code> entry from every detected agent's MCP config (with a <code>.bak</code> of each modified file). To skip the MCP cleanup, append <code>-s -- --keep-mcp</code>. To target a single agent: <code>sl-dbg mcp uninstall claude</code> (or <code>cursor</code> / <code>vscode</code> / <code>codex</code> / <code>copilot</code> / <code>all</code>). Cached state lives under <code>~/.local/state/sl-dbg</code> and is safe to <code>rm -rf</code>.</p>
         </details>
 
         <details>
