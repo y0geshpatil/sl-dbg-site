@@ -1,7 +1,7 @@
 {
   "repository": "y0geshpatil/sl-dbg",
-  "revision": "876d2e1bf6bf1d9e858510936b711b3fd2994d34",
-  "mcpBinarySha256": "9c690390d6c7a12457b038104861759c0328dd840e77eb3de64592a9a84f2584",
+  "revision": "453306c16fbbb267b41be81dfe9d9dc4800036b5",
+  "mcpBinarySha256": "ec30f7deed6be03a033d21ba0792df397e63b8b00aafe072955551bdd97622a7",
   "pages": {
     "getting-started": {
       "title": "Installation and first session",
@@ -19,7 +19,7 @@
       "source": "scripts/gen-mcp-docs.py",
       "linkBase": "docs/MCP.md",
       "note": "Generated with evaluation enabled for introspection. Normal safe mode denies evaluation calls; read-only registrations hide mutating tools.",
-      "sha256": "d54f74e0feee2f6cc89505642f95fe6f184db22e2761323967864cd3922d1a21"
+      "sha256": "8ee9c9ef854a7761f7d893398b22ad92975f63a82adf8952b7419c7fe2639fde"
     },
     "agent-guide": {
       "title": "AI agent guide",
@@ -32,7 +32,7 @@
       "path": "docs/commands.md",
       "source": "docs/COMMANDS.md",
       "note": "Adapter capabilities vary. Use sl-dbg --help and each command’s --help for the options supported by your installed binary.",
-      "sha256": "2b8425c53c7cc7d272e01e8401cc9d3f2f3cc592c3fac601f1a700d8cd2fbd8d"
+      "sha256": "96378e6ba4f90705aa59a83b8e860df7ecff0cd171edf3324dca2925dd39c1e2"
     },
     "configuration": {
       "title": "Configuration design (planned)",

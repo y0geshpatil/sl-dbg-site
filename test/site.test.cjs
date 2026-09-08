@@ -75,7 +75,13 @@ test('installation and first-session commands do not regress', () => {
   assert.match(html, /curl[^"]+ \| INSTALL_DIR=&quot;\$HOME\/\.local\/bin&quot; bash/);
   assert.match(guide, /sl-dbg break sl-dbg-demo\.py:4/);
   assert.match(guide, /total = 55/);
-  assert.match(guide, /v0\.5\.4 release has no Java adapter JAR/);
+  assert.match(guide, /historical v0\.5\.4 release has no Java adapter JAR/);
+  assert.match(html, /bash -s -- v0\.5\.5/);
+  assert.doesNotMatch(html, /v0\.5\.4/);
+  assert.match(guide, /sl-dbg_0\.5\.5_darwin_arm64\.tar\.gz/);
+  assert.match(guide, /releases\/download\/v0\.5\.5\/sl-dbg-java-adapter\.jar\.sha256/);
+  assert.doesNotMatch(guide, /unresolved Java function-breakpoint verification failure/);
+  assert.match(guide, /display `pending` after asynchronous binding/);
   assert.match(guide, /--dry-run/);
   assert.match(guide, /--keep-mcp/);
   assert.match(guide, /sl-dbg mcp install claude --allow-program "\$PWD\/sl-dbg-demo\.py" --dry-run/);

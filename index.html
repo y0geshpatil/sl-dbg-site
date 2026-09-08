@@ -160,10 +160,10 @@ sl-dbg version</code></pre>
 
           <div class="tab-pane" data-pane="version">
             <div class="snippet">
-              <div class="snippet-head"><span class="snippet-title">install.sh — example version pin</span><button class="copy" data-copy="curl -fsSL https://raw.githubusercontent.com/y0geshpatil/sl-dbg/main/scripts/install.sh | bash -s -- v0.5.4">Copy</button></div>
-<pre><code><span class="prompt">$</span> curl -fsSL https://raw.githubusercontent.com/y0geshpatil/sl-dbg/main/scripts/install.sh | bash -s -- v0.5.4</code></pre>
+              <div class="snippet-head"><span class="snippet-title">install.sh — pin v0.5.5</span><button class="copy" data-copy="curl -fsSL https://raw.githubusercontent.com/y0geshpatil/sl-dbg/main/scripts/install.sh | bash -s -- v0.5.5">Copy</button></div>
+<pre><code><span class="prompt">$</span> curl -fsSL https://raw.githubusercontent.com/y0geshpatil/sl-dbg/main/scripts/install.sh | bash -s -- v0.5.5</code></pre>
             </div>
-            <p class="muted">Replace the example with a tag from <a href="https://github.com/y0geshpatil/sl-dbg/releases">Releases</a>. This pins the binary, not the installer script or language adapters. v0.5.4 does not ship a Java adapter JAR.</p>
+            <p class="muted"><a href="https://github.com/y0geshpatil/sl-dbg/releases/tag/v0.5.5">v0.5.5</a> includes the platform binaries, Java adapter JAR, and checksums. This command pins the binary, not the installer script or language adapters.</p>
           </div>
 
           <div class="tab-pane" data-pane="local">
@@ -222,7 +222,7 @@ sl-dbg version</code></pre>
             <div class="adapter">
               <div class="adapter-lang">Java</div>
               <code>sl-dbg install-adapter java</code>
-              <p>Needs JDK 11+. The v0.5.4 release has no adapter JAR; use the <a href="docs.html?p=getting-started#java-source-build-workaround">source-build instructions</a> or a later release that includes it.</p>
+              <p>Needs JDK 11+. Downloads the matching release JAR and verifies its SHA-256 sidecar; no Maven needed. <a href="docs.html?p=getting-started#java-release-installation">Java setup and upgrade notes →</a></p>
             </div>
             <div class="adapter all">
               <div class="adapter-lang">All</div>
@@ -311,7 +311,7 @@ sl-dbg continue">Copy</button></div>
           sl-dbg speaks Model Context Protocol over stdio. Install a language adapter first,
           then preview and register one client. Registration edits that client’s configuration; it does not install the client.
         </p>
-        <p class="muted">On v0.5.4, VS Code and Copilot registration use older formats. Use the <a href="docs.html?p=getting-started#vs-code-and-copilot-configuration">manual configuration examples</a> for those clients until a release includes the registration fixes.</p>
+        <p class="muted">v0.5.5 includes corrected VS Code and Copilot registration. See <a href="docs.html?p=getting-started#vs-code-and-copilot-configuration">client configuration details</a> for manual setup or migration from older versions.</p>
         <p class="muted">Run the example from the directory containing <code>sl-dbg-demo.py</code>. The program allowlist matches the target file, not <code>python3</code>; a bare registration can connect but reject a script launch.</p>
 
         <div class="two-col">

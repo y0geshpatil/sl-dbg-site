@@ -12,7 +12,7 @@ This repository owns the homepage, viewer, `docs/getting-started.md`, and `docs/
 
 ## Refresh the documentation snapshot
 
-Use an isolated, clean **committed** core checkout at a reviewed release or commit. Build the binary in that checkout according to core's instructions. Never generate from an unrelated installed binary.
+Use an isolated, clean **committed** core checkout at a reviewed release or commit. Build the binary in that checkout according to core's instructions, or use the checksum-verified official binary released from that exact source revision. Pass its absolute path as the second argument below. Never generate from an unrelated installed binary.
 
 ```bash
 node scripts/sync-docs.mjs /absolute/path/to/core-checkout /absolute/path/to/core-checkout/bin/sl-dbg
@@ -49,11 +49,13 @@ The Node built-in tests need no npm dependencies. They use temporary fixtures an
 
 GitHub Pages is currently configured to serve the **root of `main`** at `https://y0geshpatil.github.io/sl-dbg-site/` (legacy branch-based deployment). There is no site build/deploy workflow. The check workflow does not publish anything or change Pages settings.
 
-Before merging this readiness pass:
+For each release:
 
-1. Merge the coordinated core installer changes first: the site documents the new `~/.local/bin` default, mandatory checksums, no automatic sudo, and fail-closed uninstall.
+1. Merge the corresponding core changes first. The site documents the `~/.local/bin` default, mandatory checksums, no automatic sudo, and fail-closed uninstall.
 2. Refresh the core snapshot at the final merged/released commit and review the generated diff. Ensure that provenance commit is reachable on GitHub before publishing the site.
 3. If advertising new **binary** behavior, publish and verify the corresponding core release separately. Changing an installer on `main` does not change the latest released binary.
-4. Check public asset URLs and the full first-session journey from a clean fixture, then merge the site. Normal Pages branch deployment follows that merge; this work does not trigger it itself.
+4. Check public asset URLs and the full first-session journey from a clean fixture, then merge the site through its PR checks. Confirm the Pages build succeeds and the live site serves the expected files; a successful push alone is not deployment confirmation.
 
-The verified v0.5.4 release has four platform archives and their checksum manifest but no Java adapter JAR. It also predates the corrected VS Code/Copilot registration behavior. Keep the documented source-build and manual-client-configuration workarounds until a later release includes the fixes and assets. Do not imply that a pipeline configuration change retroactively fixes existing assets. Homebrew remains unavailable while the core release workflow skips its tap step.
+The documented release is [v0.5.5](https://github.com/y0geshpatil/sl-dbg/releases/tag/v0.5.5), from public core commit `453306c16fbbb267b41be81dfe9d9dc4800036b5`. Its seven published assets comprise four platform archives, their checksum manifest, the Java adapter JAR, and the JAR's SHA-256 sidecar. MCP documentation is introspected from the checksum-verified released macOS arm64 binary.
+
+v0.5.4's missing Java artifact and old VS Code/Copilot registration are historical migration concerns, not requirements for new users. v0.5.5 fixes the Java line-resume and immediate function-verification bugs; asynchronously bound breakpoints can still display pending. Do not generalize smoke results to every architecture or debugger feature. Homebrew remains unavailable while the core release workflow skips its tap step; Windows and configuration-file presets remain unsupported/planned respectively.

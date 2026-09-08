@@ -2,6 +2,8 @@
 
 Start with the CLI and one language adapter. You do not need an AI client to try the debugger. This walkthrough pauses a four-line Python program and inspects `total = 55`, then shows how to connect an MCP client.
 
+These examples use [v0.5.5](https://github.com/y0geshpatil/sl-dbg/releases/tag/v0.5.5), which includes the platform binaries, Java adapter JAR, and their checksums.
+
 ## Before you start
 
 - Use **macOS or Linux**, on **amd64/x86_64 or arm64/aarch64**. Windows is not supported. A container may need debugging permissions beyond those needed to run the CLI.
@@ -64,7 +66,7 @@ Use a tag from [Releases](https://github.com/y0geshpatil/sl-dbg/releases). For e
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/y0geshpatil/sl-dbg/main/scripts/install.sh \
-  | bash -s -- v0.5.4
+  | bash -s -- v0.5.5
 ```
 
 That pins the **binary**, not the installer script or adapters. It is an example of an existing tag, not a promise that it is the newest release.
@@ -83,17 +85,17 @@ Use an absolute directory you own. A permission error is a reason to choose a us
 
 Download the archive for your platform and its matching `sl-dbg_<version>_checksums.txt` from the same release. `uname -s` and `uname -m` identify your OS/architecture. `Darwin` maps to `darwin`; `x86_64` maps to `amd64`; `aarch64` maps to `arm64`.
 
-For example, **v0.5.4 on Apple silicon macOS only**, after downloading both files into an otherwise empty directory:
+For example, **v0.5.5 on Apple silicon macOS only**, download [the archive](https://github.com/y0geshpatil/sl-dbg/releases/download/v0.5.5/sl-dbg_0.5.5_darwin_arm64.tar.gz) and [checksum manifest](https://github.com/y0geshpatil/sl-dbg/releases/download/v0.5.5/sl-dbg_0.5.5_checksums.txt) into an otherwise empty directory:
 
 ```bash
-shasum -a 256 sl-dbg_0.5.4_darwin_arm64.tar.gz
-grep '  sl-dbg_0.5.4_darwin_arm64.tar.gz$' sl-dbg_0.5.4_checksums.txt
+shasum -a 256 sl-dbg_0.5.5_darwin_arm64.tar.gz
+grep '  sl-dbg_0.5.5_darwin_arm64.tar.gz$' sl-dbg_0.5.5_checksums.txt
 ```
 
 Compare the two hashes exactly. On Linux, use `sha256sum` instead of `shasum -a 256`. **Do not extract or install if they differ, the checksum entry is missing, or either command fails.** After a match:
 
 ```bash
-tar -xzf sl-dbg_0.5.4_darwin_arm64.tar.gz
+tar -xzf sl-dbg_0.5.5_darwin_arm64.tar.gz
 mkdir -p "$HOME/.local/bin"
 install -m 0755 sl-dbg "$HOME/.local/bin/sl-dbg"
 export PATH="$HOME/.local/bin:$PATH"
@@ -165,32 +167,29 @@ For Python, the explicit virtual-environment setup above is also an adapter inst
 
 For Go, ensure the selected Go toolchain can build the current Delve release. `go install` writes to `GOBIN` if set, otherwise the first `GOPATH` entry's `bin` directory (commonly `~/go/bin`). Put that directory on PATH **before** starting the daemon or your MCP client.
 
-**Java release limitation:** the published v0.5.4 release has no Java adapter JAR. A new installer cannot add a missing asset to that release. Use the source-build workaround below, or a later release whose assets actually include `sl-dbg-java-adapter.jar` and its checksum. Native Java debugging support does not mean the adapter is already installed.
+### Java release installation
 
-### Java source-build workaround
-
-For v0.5.4, build its adapter from reviewed source. This needs **Git, Maven, and JDK 11+** on PATH, plus network access to Maven dependencies. It does not require building the Go CLI or bypassing a release checksum:
+With v0.5.5 installed and **JDK 11+** on PATH:
 
 ```bash
-git clone --depth 1 --branch v0.5.4 https://github.com/y0geshpatil/sl-dbg.git sl-dbg-java-source
-cd sl-dbg-java-source
-```
-
-Review the checked-out source and Maven configuration before building:
-
-```bash
-mvn -f adapters/java-launcher/pom.xml -DskipTests package
-export SL_DBG_JAVA_DEBUG_JAR="$PWD/adapters/java-launcher/target/sl-dbg-java-adapter.jar"
+java -version
+sl-dbg install-adapter java
 sl-dbg adapters
 ```
 
-Stop on any build error; the JAR must exist at the printed path. Keep the source/build directory while using that JAR. The environment override selects this locally built artifact rather than downloading one. Set it in the environment that starts the daemon (and in your MCP client's environment if needed); it does not alter a daemon already running. Finish existing sessions before restarting the daemon.
+The installer downloads [sl-dbg-java-adapter.jar](https://github.com/y0geshpatil/sl-dbg/releases/download/v0.5.5/sl-dbg-java-adapter.jar) and [sl-dbg-java-adapter.jar.sha256](https://github.com/y0geshpatil/sl-dbg/releases/download/v0.5.5/sl-dbg-java-adapter.jar.sha256) from the **same v0.5.5 tag**. It checks the SHA-256 before replacing the cached JAR. Release installation needs no Maven or source checkout; do not bypass a missing or mismatched checksum.
 
-This is an installation workaround, not a claim that all Java debugging operations are verified. Use line breakpoints for initial debugging; the readiness smoke still has an unresolved Java function-breakpoint verification failure.
+Already have a Java adapter cached? Run `sl-dbg install-adapter java --force` after upgrading the CLI to refresh it from that version's release. A valid cached JAR is otherwise retained; it is not automatically version-matched. Remove an old `SL_DBG_JAVA_DEBUG_JAR` override if you intend to use the downloaded adapter instead. Finish active sessions before restarting the daemon with the changed adapter.
+
+**Breakpoint display limitation:** Java breakpoints initially waiting for a class to load can still display `pending` after asynchronous binding. This is distinct from the line-resume and immediate function-verification bugs fixed in v0.5.5. Check actual stops and locations rather than treating a pending display as proof that the breakpoint cannot hit.
+
+### Older v0.5.4 installations
+
+The historical v0.5.4 release has no Java adapter JAR and predates the corrected VS Code/Copilot registration. New users do not need its source-build workaround: install v0.5.5, refresh any cached Java adapter, and preview updated client registration. A pinned v0.5.4 binary does not gain these fixes from an updated installer script.
 
 ## Connect an AI agent
 
-**Release compatibility:** the source snapshot includes registration fixes that are not in v0.5.4. That release writes an older VS Code schema and Copilot configuration location. For v0.5.4, use the manual configurations below for those two clients, or build the reviewed core source. Do not assume updating only the installer updates the released CLI's behavior.
+Use v0.5.5 for the registration commands below. If upgrading from v0.5.4, preview the corrected client configuration before replacing an existing entry.
 
 First complete a CLI session so you know the runtime and adapter work. Then preview registration for **one** client:
 
@@ -218,9 +217,9 @@ Restart the client or reload its MCP configuration, then confirm it shows sl-dbg
 
 ### VS Code and Copilot configuration
 
-The corrected registration targets are **`.vscode/mcp.json` with `servers`** for VS Code and **`~/.copilot/mcp-config.json` with `mcpServers`** for GitHub Copilot CLI. These are different schemas.
+In v0.5.5, registration writes **`.vscode/mcp.json` with `servers`** for VS Code and **`~/.copilot/mcp-config.json` with `mcpServers`** for GitHub Copilot CLI. These are different schemas.
 
-If your binary predates the registration fixes, back up the existing file and merge only the sl-dbg entry; do not replace other servers or settings. Replace every absolute-path placeholder below with your real path from `command -v sl-dbg` and your project root.
+The registration command handles these formats. For manual configuration or migration, back up the existing file and merge only the sl-dbg entry; do not replace other servers or settings. Replace every absolute-path placeholder below with your real path from `command -v sl-dbg` and your project root.
 
 VS Code, in the project's `.vscode/mcp.json`:
 
@@ -276,7 +275,7 @@ The daemon retains its environment and policy across CLI and MCP invocations. Af
 | The version did not change | Use `type -a sl-dbg` to find older copies or aliases. Check the absolute installed binary, refresh shell command lookup, and restart the daemon only after finishing sessions. |
 | Permission denied during install | Choose an absolute, user-owned `INSTALL_DIR` and pass it to Bash. Do not prefix the whole installer with sudo. |
 | HTTP 403 / API rate limit | A pinned release avoids the `latest` API lookup. Check GitHub's status and your network/proxy before retrying. |
-| HTTP 404 / no release / missing asset | Check that the exact tag and OS/architecture asset exist on Releases. For Java on v0.5.4, use the documented source build. |
+| HTTP 404 / no release / missing asset | Check that the exact tag and OS/architecture asset exist on Releases. Older v0.5.4 has no Java JAR; upgrade the CLI to v0.5.5 instead of bypassing verification. |
 | Checksum download fails or hashes mismatch | Stop. Re-download the archive and checksum from the same release; do not bypass verification. |
 | `externally-managed-environment`, pip `--user` failure, or debugpy missing | Use the venv walkthrough. Check which `python3` imports debugpy, and whether the daemon was started with that environment. |
 | `python3 -m venv` fails | Install your distribution's venv/ensurepip support, then recreate the virtual environment. Do not install into system Python with sudo. |
@@ -296,7 +295,7 @@ Finish active debug sessions and close MCP clients before upgrading. Run `sl-dbg
 
 The installer replaces the CLI, not adapters or client configuration. If the binary moved, preview and refresh each MCP registration because it records an absolute path. Keep an existing working adapter until you have reviewed the new release's adapter requirements.
 
-Java's cache is not automatically version-matched to the CLI. After upgrading to a release that actually includes the JAR and its checksum, use `sl-dbg install-adapter java --force` to refresh it. Do not use that as a workaround for v0.5.4's missing release assets.
+Java's cache is not automatically version-matched to the CLI. After upgrading to v0.5.5, use `sl-dbg install-adapter java --force` to refresh it from the matching release. Remove an old source-build override if you want the cached release adapter to be used.
 
 ### Uninstall
 
