@@ -1,7 +1,7 @@
 {
   "repository": "y0geshpatil/sl-dbg",
-  "revision": "b561464d776e81d1dcd885c6b954e56f67cf85ac",
-  "mcpBinarySha256": "ec9a0146c016ff073fe1f84902628c4f714bee9409a1f57e603481c9374143de",
+  "revision": "876d2e1bf6bf1d9e858510936b711b3fd2994d34",
+  "mcpBinarySha256": "9c690390d6c7a12457b038104861759c0328dd840e77eb3de64592a9a84f2584",
   "pages": {
     "getting-started": {
       "title": "Installation and first session",
@@ -11,7 +11,7 @@
       "title": "Language adapters",
       "path": "docs/adapters.md",
       "source": "docs/ADAPTERS.md",
-      "sha256": "bd50b3c9eef6bdb09663c453d6a9a2960227266583367b1978389f7218b8072a"
+      "sha256": "45e29571710fcc9c454fbb13f7988bd25117c725b6335af69ecb29a7409309a0"
     },
     "mcp": {
       "title": "MCP reference",
@@ -19,20 +19,20 @@
       "source": "scripts/gen-mcp-docs.py",
       "linkBase": "docs/MCP.md",
       "note": "Generated with evaluation enabled for introspection. Normal safe mode denies evaluation calls; read-only registrations hide mutating tools.",
-      "sha256": "36b59b0ef65a566bd53bc72275bcc07a6b8b3f816b6c8870dc1a1249e4b9f0f7"
+      "sha256": "d54f74e0feee2f6cc89505642f95fe6f184db22e2761323967864cd3922d1a21"
     },
     "agent-guide": {
       "title": "AI agent guide",
       "path": "docs/agent-guide.md",
       "source": "docs/AGENT-GUIDE.md",
-      "sha256": "15bccf6824fc612bfd82d866c4da9612f968b4a495dee82dd03e78b0abcac11b"
+      "sha256": "e89301c354d9f848a77665ba03263a7e85947558c93e2f6cab505bc1a1de726d"
     },
     "commands": {
       "title": "CLI reference",
       "path": "docs/commands.md",
       "source": "docs/COMMANDS.md",
       "note": "Adapter capabilities vary. Use sl-dbg --help and each command’s --help for the options supported by your installed binary.",
-      "sha256": "e0cceb00aee5cf8beba851fbf2adca2d9786a5336c99d1bd711c08d5b8a0f1bd"
+      "sha256": "2b8425c53c7cc7d272e01e8401cc9d3f2f3cc592c3fac601f1a700d8cd2fbd8d"
     },
     "configuration": {
       "title": "Configuration design (planned)",
@@ -58,7 +58,7 @@
       "title": "Threat model",
       "path": "docs/security.md",
       "source": "docs/SECURITY.md",
-      "sha256": "da93107b3e2f7a7811bbcde50310c17888dc4cc43a64b590586bd3b177045d47"
+      "sha256": "8b4cdcaf4331b87ced2775943293f998ace567544d11382342a98b26991c2995"
     },
     "security-review": {
       "title": "Reviewing releases",
