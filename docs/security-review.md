@@ -1,50 +1,31 @@
-# Security review
+# Reviewing releases
 
-`sl-dbg` is fully open source under Apache-2.0. There is no
-private-source / NDA gate anymore — audit, fork, patch, or fuzz at will.
+The [source repository](https://github.com/y0geshpatil/sl-dbg) is public under Apache-2.0. Review the code and release process rather than treating this page as a security certification.
 
-## What you have
+## Reviewable artifacts
 
 | Artifact | Where |
 |---|---|
-| **Source repository** | [github.com/y0geshpatil/sl-dbg](https://github.com/y0geshpatil/sl-dbg) |
-| **Release binaries** | [github.com/y0geshpatil/sl-dbg/releases](https://github.com/y0geshpatil/sl-dbg/releases) |
-| **Per-release SHA-256 checksums** | `sl-dbg_<version>_checksums.txt` on each release |
-| **Install scripts** | [install.sh](../install.sh) · [uninstall.sh](../uninstall.sh) |
-| **MCP tool surface** | [mcp.md](mcp.md) — auto-generated from a live binary |
-| **Threat model** | [security.md](security.md) — what the daemon trusts, what it doesn't, every policy check |
-| **Configuration & env vars** | [configuration.md](configuration.md) |
-| **Architecture** | [design.md](design.md) |
+| Release archives and SHA-256 manifest | [Releases](https://github.com/y0geshpatil/sl-dbg/releases) |
+| Canonical installer and uninstaller | [install.sh](https://github.com/y0geshpatil/sl-dbg/blob/main/scripts/install.sh) and [uninstall.sh](https://github.com/y0geshpatil/sl-dbg/blob/main/scripts/uninstall.sh) |
+| Legacy website forwarding wrappers | [install.sh](../install.sh) and [uninstall.sh](../uninstall.sh) |
+| MCP tool surface | [MCP reference](mcp.md) |
+| Threat model and limitations | [Security](security.md) |
+| Proposed configuration-file design (not implemented) | [Configuration](configuration.md) |
+| Architecture and design notes | [Design](design.md) |
+
+## Verify the downloaded archive
+
+Use the checksum manifest from the **same release** as the downloaded archive. Compare the archive's SHA-256 before extracting or installing; see [manual installation](getting-started.md#manual-download). A missing checksum or mismatch is a failure, not a reason to skip verification.
+
+These checksums are not signatures. They verify consistency with the release manifest, not an independent chain of trust.
+
+## Local builds
+
+The release settings live in the core repository's `.goreleaser.yaml` and release workflow. Build from a reviewed tag using its documented toolchain and flags.
+
+An arbitrary `go build` is **not guaranteed byte-identical** to a release build: toolchain, flags, build metadata, and archive packaging can differ. The published manifest hashes release assets, not a bare executable extracted from an archive.
 
 ## Reporting vulnerabilities
 
-**Do not open a public issue for security bugs.** Instead:
-
-1. Follow the private disclosure process documented in
-   [SECURITY.md](https://github.com/y0geshpatil/sl-dbg/blob/main/SECURITY.md)
-   at the repository root, or
-2. Email **security@sl-dbg.dev** with a proof-of-concept and the exact
-   `sl-dbg version` output.
-
-We will acknowledge within 72 hours and coordinate a fix + release
-before any public disclosure.
-
-## Reproducible builds
-
-The release binary is byte-identical to what you'd get from `go build`
-on the tagged source, with `-s -w` ldflags to strip symbols. To verify:
-
-```bash
-git clone --branch v<version> https://github.com/y0geshpatil/sl-dbg
-cd sl-dbg
-go build -ldflags="-s -w" -o sl-dbg ./cmd/sl-dbg
-shasum -a 256 sl-dbg   # compare against the checksums file
-```
-
-## Contributing security-relevant patches
-
-Small hardening PRs are welcome — see
-[CONTRIBUTING.md](https://github.com/y0geshpatil/sl-dbg/blob/main/CONTRIBUTING.md).
-For anything that touches the MCP surface, the source jail, or eval
-gating, please open an issue first so we can coordinate the tests and
-the release note.
+Follow the current private disclosure instructions in the repository's [SECURITY.md](https://github.com/y0geshpatil/sl-dbg/blob/main/SECURITY.md). Do not post exploit details, secrets, or sensitive debugger logs in a public issue. This website does not establish a separate reporting address or response-time guarantee.

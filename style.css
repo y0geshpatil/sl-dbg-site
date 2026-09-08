@@ -45,6 +45,12 @@ html, body {
 
 a { color: var(--link); text-decoration: none; }
 a:hover { text-decoration: underline; }
+a:focus-visible, button:focus-visible, [tabindex="0"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+[id] { scroll-margin-top: 80px; }
+[hidden] { display: none !important; }
 
 h1, h2, h3, h4 { font-family: var(--sans); letter-spacing: -0.02em; }
 h1 { font-size: 56px; line-height: 1.05; margin: 0 0 24px; font-weight: 700; }
@@ -53,6 +59,7 @@ h3 { font-size: 18px; line-height: 1.4; margin: 24px 0 10px; font-weight: 600; }
 h4 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 12px; font-weight: 600; }
 
 p { margin: 0 0 16px; color: var(--fg-dim); }
+p, li { overflow-wrap: anywhere; }
 .muted { color: var(--muted); }
 .center { text-align: center; }
 .narrow { max-width: 720px; }
@@ -114,6 +121,16 @@ p { margin: 0 0 16px; color: var(--fg-dim); }
 
 @media (max-width: 720px) {
   .nav-links a:not(.nav-cta) { display: none; }
+  .nav-links a.mobile-docs { display: inline; }
+  .nav-links { gap: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* ============================================================
@@ -297,7 +314,7 @@ p code, li code, summary code, td code {
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
   gap: 16px;
   margin-top: 40px;
 }
@@ -400,12 +417,12 @@ p code, li code, summary code, td code {
 
 .two-col {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 28px;
   margin-top: 40px;
 }
 @media (max-width: 800px) {
-  .two-col { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: minmax(0, 1fr); }
 }
 .resources { margin-top: 48px; }
 .bullets { padding-left: 20px; }
@@ -417,7 +434,7 @@ p code, li code, summary code, td code {
 
 .cmd-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
   gap: 18px;
   margin: 40px 0 24px;
 }
@@ -457,13 +474,14 @@ p code, li code, summary code, td code {
    ============================================================ */
 
 .platforms {
+  display: block;
   width: 100%;
   border-collapse: collapse;
   margin-top: 24px;
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--r-md);
-  overflow: hidden;
+  overflow-x: auto;
 }
 .platforms th, .platforms td {
   text-align: left;

@@ -1,0 +1,68 @@
+{
+  "repository": "y0geshpatil/sl-dbg",
+  "revision": "b561464d776e81d1dcd885c6b954e56f67cf85ac",
+  "mcpBinarySha256": "ec9a0146c016ff073fe1f84902628c4f714bee9409a1f57e603481c9374143de",
+  "pages": {
+    "getting-started": {
+      "title": "Installation and first session",
+      "path": "docs/getting-started.md"
+    },
+    "adapters": {
+      "title": "Language adapters",
+      "path": "docs/adapters.md",
+      "source": "docs/ADAPTERS.md",
+      "sha256": "bd50b3c9eef6bdb09663c453d6a9a2960227266583367b1978389f7218b8072a"
+    },
+    "mcp": {
+      "title": "MCP reference",
+      "path": "docs/mcp.md",
+      "source": "scripts/gen-mcp-docs.py",
+      "linkBase": "docs/MCP.md",
+      "note": "Generated with evaluation enabled for introspection. Normal safe mode denies evaluation calls; read-only registrations hide mutating tools.",
+      "sha256": "36b59b0ef65a566bd53bc72275bcc07a6b8b3f816b6c8870dc1a1249e4b9f0f7"
+    },
+    "agent-guide": {
+      "title": "AI agent guide",
+      "path": "docs/agent-guide.md",
+      "source": "docs/AGENT-GUIDE.md",
+      "sha256": "15bccf6824fc612bfd82d866c4da9612f968b4a495dee82dd03e78b0abcac11b"
+    },
+    "commands": {
+      "title": "CLI reference",
+      "path": "docs/commands.md",
+      "source": "docs/COMMANDS.md",
+      "note": "Adapter capabilities vary. Use sl-dbg --help and each command’s --help for the options supported by your installed binary.",
+      "sha256": "e0cceb00aee5cf8beba851fbf2adca2d9786a5336c99d1bd711c08d5b8a0f1bd"
+    },
+    "configuration": {
+      "title": "Configuration design (planned)",
+      "path": "docs/configuration.md",
+      "source": "docs/CONFIGURATION.md",
+      "note": "Planned design, not an implemented configuration file. Use documented CLI flags and environment variables for current policy.",
+      "sha256": "8d66568963361f1631237d02ce06ea756c26eb7c43a4ed2405056e78f345679b"
+    },
+    "platforms": {
+      "title": "Platforms",
+      "path": "docs/platforms.md",
+      "source": "docs/PLATFORMS.md",
+      "sha256": "fc98922c0a4c6ab07603cac5e4b51b4090ab0139e93b56778239d817a5600fdd"
+    },
+    "design": {
+      "title": "Architecture and design notes",
+      "path": "docs/design.md",
+      "source": "docs/DESIGN.md",
+      "note": "Design notes describe goals as well as implementation. They are not a current feature or platform support contract.",
+      "sha256": "92da743224e1c64e8038a698e03a2aa8e8445a8eb696d3466d94c9b1fef32e90"
+    },
+    "security": {
+      "title": "Threat model",
+      "path": "docs/security.md",
+      "source": "docs/SECURITY.md",
+      "sha256": "da93107b3e2f7a7811bbcde50310c17888dc4cc43a64b590586bd3b177045d47"
+    },
+    "security-review": {
+      "title": "Reviewing releases",
+      "path": "docs/security-review.md"
+    }
+  }
+}
