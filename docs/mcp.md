@@ -1,6 +1,8 @@
 # sl-dbg MCP server reference
 
-Auto-generated from a live `sl-dbg mcp` introspection on **2026-06-27** (server `sl-dbg` v`v0.5.0-dirty`).
+> **Schema profile: eval-enabled** (`--safe --allow-program '*' --allow-eval`). Generation explicitly enables evaluation; this is not the default MCP configuration. Default safe mode still advertises evaluation tools but rejects their execution.
+
+Auto-generated from a live `sl-dbg mcp` introspection at core commit `453306c16fbbb267b41be81dfe9d9dc4800036b5` (server `sl-dbg` v`0.5.5`).
 
 > This file is the canonical contract between sl-dbg and any MCP-aware agent. Every entry below is what the agent receives from `tools/list` / `resources/list` / `prompts/list`, verbatim from the binary.
 

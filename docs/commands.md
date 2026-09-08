@@ -23,17 +23,39 @@ List registered language adapters and detection status.
 ]}}
 ```
 
-### `sl-dbg install-adapter <lang>`
-Bootstrap a missing adapter (pip install, go install, download jar, …).
+### `sl-dbg install-adapter <python|go|java|all> [--force]`
+Install the selected adapter; `all` attempts all three and returns an error if
+any fail. Python uses an existing debugpy installation or a managed virtual
+environment; Go installs Delve; released Java binaries download the same-version
+JAR and mandatory SHA-256 sidecar. `--force` refreshes an existing adapter.
+See [ADAPTERS.md](ADAPTERS.md) for prerequisite/runtime detection and cache paths.
 
-### `sl-dbg daemon [start|stop|status|logs]`
-Direct daemon control. Normally implicit.
-
-### `sl-dbg config get|set <key> [value]`
-Read/write user config.
+### `sl-dbg daemon [serve|stop|status|logs]`
+Direct daemon control. Normally implicit. `stop` never starts an absent daemon.
+It waits up to five seconds for the acknowledged daemon to release its endpoint
+and exit before returning; failure is actionable, not silently ignored. A
+replacement daemon's endpoint/PID is left alone. If already stopped, the response
+data is `{"shutdown":"not running"}`.
 
 ### `sl-dbg mcp`
-Run as an MCP server over stdio. Exposes every other command as an MCP tool. (Planned, Phase 5.)
+Run the MCP server over stdio. `tools/list` is the authoritative schema for the
+running binary. Safe mode is the default; evaluation is disabled unless explicitly
+enabled. See [AGENT-GUIDE.md](AGENT-GUIDE.md).
+
+### `sl-dbg mcp install <agent>` / `sl-dbg mcp uninstall <agent>`
+Supported clients: `claude` (Desktop), `cursor`, `vscode` (current workspace),
+`codex`, `copilot`, and `all` (detected clients). `--dry-run` previews changes;
+install `--print` emits snippets without writing; `--force` explicitly replaces
+an existing entry. Configs are backed up before atomic updates. Any failed client
+update makes the command fail, even if other clients were updated successfully.
+
+VS Code uses `.vscode/mcp.json` with a `servers` object. Copilot CLI uses
+`~/.copilot/mcp-config.json` with `mcpServers`. Registrations use the installed
+binary's absolute path; rerun with `--force` after moving the binary. TOML forms
+that cannot be safely edited are refused; use the printed snippet to edit manually.
+
+The proposed TOML application config is not loaded yet; see
+[CONFIGURATION.md](CONFIGURATION.md). There is no `sl-dbg config` subcommand.
 
 ---
 
@@ -43,7 +65,7 @@ Run as an MCP server over stdio. Exposes every other command as an MCP tool. (Pl
 Launch a new debug session by starting the program.
 
 Flags:
-- `--lang` — required (python, java, go, cpp, dotnet, node, rust)
+- `--lang` — required (python, java, go)
 - `--program` — path to entrypoint
 - `--args "<args>"` — arguments passed to the program
 - `--cwd <dir>` — working directory
@@ -51,7 +73,7 @@ Flags:
 - `--stop-on-entry` — pause at first line
 - `--source-root <dir>` (repeatable)
 - `--read-only` — forbid state mutation
-- `--make-default` — set as default session (default true if first)
+- `--name` — optional unique session name; each new session becomes the default
 
 Response:
 ```json
@@ -66,8 +88,10 @@ sl-dbg attach --lang java --host localhost --port 5005
 sl-dbg attach --lang python --pid 12345
 ```
 
-### `sl-dbg listen --lang <L> --port <P>`
-Listen for a target to connect (reverse attach). Useful for firewalled targets.
+### `sl-dbg listen [--timeout <duration>]`
+Wait for the current session to pause or terminate. This is not a reverse-attach
+network listener. If already paused or terminated, return the current stop
+immediately. Entry pauses that arrive during adapter launch are retained.
 
 ### `sl-dbg sessions`
 List all active sessions.
@@ -98,6 +122,11 @@ When the session has terminated, `location`, `thread`, and the pause `reason` ar
 ```json
 {"ok":true,"data":{"state":"exited","reason":"exited","exitCode":0}}
 ```
+If the adapter (or target through the adapter) died from an OS signal, the response surfaces it explicitly so callers don't have to decode an "exit code looks signal-shaped" heuristic:
+```json
+{"ok":true,"data":{"state":"terminated","reason":"signal","signal":"killed","exitCode":137}}
+```
+`sl-dbg listen` returns the same terminal shape when invoked against an already-exited/terminated session — `state` and `listen` never disagree on `reason`, `exitCode`, or `signal` for the same session.
 
 ---
 
@@ -123,6 +152,14 @@ sl-dbg break-fn com.example.UserService.login
 sl-dbg break-fn app.process_order
 ```
 
+For Java, both `Class.method` and `Class#method` are accepted; the daemon
+translates the final `.` to `#` (the form java-debug requires internally) and
+strips any `(arg-types)` signature suffix. Fully-qualified class names
+(`pkg.sub.Class.method`) work the same way.
+The adapter's returned verification is persisted and shown by `breaks`.
+Initially pending breakpoints may still show pending after asynchronous class
+loading; this is distinct from immediate verification when a class is loaded.
+
 ### `sl-dbg break-ex <ExceptionType> [--uncaught | --caught | --all]`
 Exception breakpoint.
 ```bash
@@ -130,10 +167,11 @@ sl-dbg break-ex NullPointerException --uncaught
 sl-dbg break-ex ValueError --all
 ```
 
-### `sl-dbg watch <expression>`
-Data breakpoint — break when expression value changes.
+### `sl-dbg watch [--add <expression> | --remove <id> | --remove-all]`
+List, add, or remove persistent watch expressions. Watches are evaluated while
+paused; they do not set data breakpoints and require evaluation permission to add.
 ```bash
-sl-dbg watch user.balance
+sl-dbg watch --add user.balance
 ```
 
 ### `sl-dbg breaks`
@@ -141,9 +179,6 @@ List all breakpoints.
 
 ### `sl-dbg unbreak <id> [...]`
 Remove one or more. `--all` removes all.
-
-### `sl-dbg enable <id>` / `sl-dbg disable <id>`
-Toggle without removing.
 
 ---
 
@@ -156,6 +191,9 @@ Run from start (after `start --stop-on-entry`).
 
 ### `sl-dbg continue` (alias: `c`)
 Resume until next pause.
+For the first Java resume after suspended attach, `configurationDone` is itself
+the resume operation; sl-dbg does not send a second `continue` that could skip a
+breakpoint during class preparation. Subsequent resumes behave normally.
 
 ### `sl-dbg step` (alias: `si`)
 Step into.
@@ -169,14 +207,8 @@ Step out of current frame.
 ### `sl-dbg until <line>`
 Continue until reaching line (auto-removes after).
 
-### `sl-dbg goto <line>`
-Jump to line without executing intervening code (where supported).
-
 ### `sl-dbg pause`
 Pause a running target.
-
-### `sl-dbg back` / `sl-dbg reverse`
-Step backward / reverse-run (where adapter supports it).
 
 Common response:
 ```json
@@ -217,7 +249,7 @@ Global / module-level variables.
 Expand a previously returned object reference.
 
 ### `sl-dbg eval <expression> [--frame N]`
-Evaluate. May have side effects unless `--read-only` is set on the session.
+Evaluate an expression in the current (or specified) frame. **Refused on `--read-only` sessions** (issue #56) because expression-form evaluation in every supported language permits arbitrary side effects (`__import__('os').system(...)`, static-method calls, etc.); the DAP `context: "watch"` hint is advisory, not a sandbox. Start a new session without `--read-only` if you need eval.
 ```json
 {"ok":true,"data":{"result":"7","type":"int"}}
 ```
@@ -225,17 +257,10 @@ Evaluate. May have side effects unless `--read-only` is set on the session.
 ### `sl-dbg set <name> <value> [--frame N]`
 Modify a variable.
 
-### `sl-dbg watch-expr <expression>` / `sl-dbg watches` / `sl-dbg unwatch-expr <id>`
-Persistent watch expressions, evaluated and returned with every pause.
-
-### `sl-dbg exception`
-Details about the current exception (only valid when paused on exception).
-
 ### `sl-dbg source [--frame N] [--around L]`
-Source code around current line.
+Source code around current line. May also be invoked with `--file <path>` and `--line <n>` to view a specific location.
 
-### `sl-dbg modules`
-Loaded modules / shared libraries / JARs.
+**Security:** the daemon only returns files that resolve under the session's source-root allowlist — explicit `--source-root` values, the launch cwd, the program directory, files containing registered breakpoints, and the current pause location. When `SL_DBG_ALLOW_SOURCE_ROOT` is set, paths under those directories are also accepted. Paths containing `..` segments are rejected unconditionally. Anything else returns `SOURCE_PATH_DENIED`. This prevents `source --file` from being used as an arbitrary-file-read primitive against the daemon user, even in `--read-only` sessions. Issue #57.
 
 ### `sl-dbg snapshot`
 Full state dump: stack + locals for every frame + globals + watches. Best command for an agent to "see everything" at a pause point.
@@ -263,11 +288,11 @@ Daemon log tail (for debugging sl-dbg itself).
 
 ---
 
-## Memory & Disassembly (Phase 4+)
+## Not implemented
 
-### `sl-dbg mem read <addr> <size>`
-### `sl-dbg mem write <addr> <hex>`
-### `sl-dbg disasm <addr> [--count N]`
+Reverse execution, `goto`, data breakpoints, module/exception inspection commands,
+memory/disassembly commands, and breakpoint enable/disable commands are not
+registered. They are design/roadmap topics, not supported CLI interfaces.
 
 ---
 
@@ -336,8 +361,9 @@ Or on error:
 | `PAUSE_TIMEOUT` | Adapter accepted pause but did not stop within 10s | Set a line BP and continue instead |
 | `TIMEOUT` | Operation exceeded its `--timeout` | Raise `--timeout` |
 | `PROGRAM_NOT_ALLOWED` | `debug_start`: program path not in `SL_DBG_ALLOW_PROGRAM` allowlist | Add program to allowlist or unset env var |
-| `SOURCE_PATH_DENIED` | `debug_source`: file outside `SL_DBG_ALLOW_SOURCE_ROOT` and not under the session's own roots | Add parent dir to allowlist or include in `sourceRoots` |
-| `EVAL_DENIED` | `debug_eval`: expression matched `SL_DBG_DENY_EVAL_PATTERNS` | Rephrase, or set `SL_DBG_DENY_EVAL_PATTERNS=-` |
+| `SOURCE_PATH_DENIED` | `debug_source`: file not under the session's source roots (program dir, `--source-root`, registered breakpoint files, current pause location), and not under `SL_DBG_ALLOW_SOURCE_ROOT` either — or path contained a `..` segment | Pass an absolute path under the session's roots, set a breakpoint in the file first, add `--source-root`, or set `SL_DBG_ALLOW_SOURCE_ROOT` |
+| `EVAL_DISABLED` | `debug_eval` / `debug_set` / `debug_watch add` / `debug_break --condition`: the daemon is running without `SL_DBG_ALLOW_EVAL=1` (default-deny). `sl-dbg mcp --safe` exports this by default; pass `--allow-eval` to re-enable. | Restart the daemon with `SL_DBG_ALLOW_EVAL=1` (and `SL_DBG_AUDIT_LOG=…` for an audit trail) |
+| `EVAL_DENIED` | `debug_eval`: expression matched `SL_DBG_DENY_EVAL_PATTERNS`. **Not a security boundary** — see `SL_DBG_ALLOW_EVAL`. | Rephrase, or set `SL_DBG_DENY_EVAL_PATTERNS=-` |
 | `RESOURCE_EXHAUSTED` | `debug_start`/`debug_attach`: daemon at `SL_DBG_MAX_SESSIONS` cap | Stop another session or raise the cap |
 
 ### Security policy (env vars)
@@ -347,10 +373,15 @@ The daemon reads these at startup. All are optional; defaults preserve legacy be
 | Env var | Purpose | Issue |
 |---|---|---|
 | `SL_DBG_ALLOW_PROGRAM` | Colon-separated glob allowlist for `start --program` paths. Globs match either the full path or basename. | #21 |
-| `SL_DBG_ALLOW_SOURCE_ROOT` | Colon-separated absolute-path roots that `debug_source` may read. The session's own `sourceRoots`/`cwd`/program dir are always trusted. | #18 |
+| `SL_DBG_ALLOW_SOURCE_ROOT` | Colon-separated absolute-path roots that `debug_source` may read **in addition** to the session's own trusted roots. The session's `sourceRoots`/`cwd`/program dir, registered breakpoint files, and current pause location are always trusted; everything else is denied with `SOURCE_PATH_DENIED`. Paths with `..` segments are rejected unconditionally. | #18, #57 |
 | `SL_DBG_MAX_SESSIONS` | Cap on concurrent sessions in the daemon. `0` (default) = unlimited. | #22 |
 | `SL_DBG_AUDIT_LOG` | Path. When set, every `start`/`attach`/`eval`/`set` is appended as one NDJSON line (`ts`, `event`, `session`, `args`). | #23 |
-| `SL_DBG_DENY_EVAL_PATTERNS` | Colon-separated substring deny list for `debug_eval` expressions. Default hardcoded list blocks the obvious Java side-effect classes (`FileOutputStream`, `Runtime.getRuntime`, …). Set to `-` to disable. | #19 |
+| `SL_DBG_ALLOW_EVAL` | Boolean (`1`/`true`/`yes`/`on`). When unset or falsy (**default**), every code-evaluating command — `debug_eval`, `debug_set`, `debug_watch add`, and any `debug_break*` with `--condition` — is rejected with `EVAL_DISABLED`. This is the only real security boundary against LLM-driven MCP callers; the daemon cannot tell CLI vs MCP traffic apart on the socket, so the knob is daemon-wide. `sl-dbg mcp --safe` exports `SL_DBG_ALLOW_EVAL=0` by default; pass `--allow-eval` (or set the env var) to re-enable. Pair with `SL_DBG_AUDIT_LOG` when enabling. | #53 / #54 |
+| `SL_DBG_DENY_EVAL_PATTERNS` | Colon-separated substring deny list for `debug_eval` expressions, applied **after** `SL_DBG_ALLOW_EVAL=1` lets the call through. Default hardcoded list blocks the obvious Java side-effect classes (`FileOutputStream`, `Runtime.getRuntime`, …). Set to `-` to disable. **Not a security boundary** — trivially bypassable via reflection / dunder traversal / `getattr`. Kept only as a typo-guard convenience. | #19 / #54 |
+| `SL_DBG_INSECURE` | When set to `1`, `sl-dbg mcp` will start without `--safe`, restoring legacy permissive defaults. Prints a loud startup banner listing the open guards. **Not for unattended LLM use.** | #53 |
+| `SL_DBG_PPROF` | Diagnostic-only. When set to a bind address (e.g. `:6060` or `127.0.0.1:6060`), the daemon serves Go's standard `net/http/pprof` endpoints on that address. Off by default — never bind a port unless explicitly opted in. Useful for capturing heap / goroutine snapshots when investigating leaks. | #45 |
+
+The daemon also sources `$XDG_STATE_HOME/sl-dbg/safe-policy.env` (or `~/.local/state/sl-dbg/safe-policy.env`) at startup. This file is written by `sl-dbg mcp --safe` so a daemon respawned by an unrelated CLI invocation (which lacks the `SL_DBG_*` env vars the safe process exported) still loads the operator's safe policy. Pre-existing environment variables take precedence over the file. Only keys prefixed with `SL_DBG_` are honoured. Issue #69.
 
 ## Schema / Versioning Policy
 

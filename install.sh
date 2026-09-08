@@ -4,4 +4,7 @@
 #   curl -fsSL https://raw.githubusercontent.com/y0geshpatil/sl-dbg/main/scripts/install.sh | bash
 # This shim just forwards to it, preserving all arguments.
 set -euo pipefail
-exec bash -c "$(curl -fsSL https://raw.githubusercontent.com/y0geshpatil/sl-dbg/main/scripts/install.sh)" _ "$@"
+script="$(mktemp)"
+trap 'rm -f "$script"' EXIT
+curl -fsSL https://raw.githubusercontent.com/y0geshpatil/sl-dbg/main/scripts/install.sh -o "$script"
+bash "$script" "$@"
