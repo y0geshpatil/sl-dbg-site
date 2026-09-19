@@ -6,12 +6,28 @@
   <meta name="color-scheme" content="dark light" />
   <title>sl-dbg — the stateless debugger CLI for AI agents and humans</title>
   <meta name="description" content="A DAP-backed debugger CLI for Python, Go, and Java. Install the CLI and a language adapter, pause a program, and inspect its state from a shell or MCP-aware AI agent." />
+  <link rel="canonical" href="https://y0geshpatil.github.io/sl-dbg-site/" />
 
   <meta property="og:type" content="website" />
   <meta property="og:title" content="sl-dbg — debugger CLI for AI agents and humans" />
   <meta property="og:description" content="Drive Python, Go, and Java debug adapters from a shell or AI agent. Follow the setup guide to your first paused program." />
   <meta property="og:url" content="https://y0geshpatil.github.io/sl-dbg-site/" />
-  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:card" content="summary" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "@id": "https://y0geshpatil.github.io/sl-dbg-site/#software",
+    "name": "sl-dbg",
+    "url": "https://y0geshpatil.github.io/sl-dbg-site/",
+    "description": "A DAP-backed debugger CLI for Python, Go, and Java, with Model Context Protocol tools for AI agents and a persistent local daemon that keeps debug sessions alive between commands.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "macOS, Linux",
+    "license": "https://www.apache.org/licenses/LICENSE-2.0",
+    "downloadUrl": "https://github.com/y0geshpatil/sl-dbg/releases",
+    "sameAs": "https://github.com/y0geshpatil/sl-dbg"
+  }
+  </script>
 
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2310b981'/%3E%3Ctext x='32' y='44' font-family='ui-monospace,monospace' font-size='34' font-weight='800' text-anchor='middle' fill='%23052016'%3E_%3C/text%3E%3C/svg%3E" />
   <link rel="stylesheet" href="style.css" />
@@ -30,7 +46,7 @@
         <a href="#install">Install</a>
         <a href="#quickstart">Quickstart</a>
         <a href="#agents">Agents</a>
-        <a class="mobile-docs" href="docs.html?p=getting-started">Docs</a>
+        <a class="mobile-docs" href="docs/getting-started.html">Docs</a>
         <a href="https://github.com/y0geshpatil/sl-dbg" target="_blank" rel="noopener">GitHub ↗</a>
         <a class="nav-cta" href="#install">Get started →</a>
       </div>
@@ -89,8 +105,8 @@
         <div class="cards">
           <div class="card">
             <div class="card-icon">⚡</div>
-            <h3>Stateless wire protocol</h3>
-            <p>No interactive prompt required. Target a session, issue a command, and inspect the result before taking the next step.</p>
+            <h3>Stateless command UX</h3>
+            <p>Each command returns a result and exits, with no interactive prompt. Stateless commands do not mean stateless execution: the daemon keeps the debug session alive between calls.</p>
           </div>
           <div class="card">
             <div class="card-icon">{ }</div>
@@ -129,7 +145,7 @@
           <a href="https://github.com/y0geshpatil/sl-dbg" target="_blank" rel="noopener">y0geshpatil/sl-dbg</a>
           is Apache-2.0. Use macOS or Linux on amd64 or arm64, with Bash,
           curl, tar, and <code>sha256sum</code> or <code>shasum</code>.
-          Public releases need no GitHub login. <a href="docs.html?p=getting-started">Start-to-finish setup and troubleshooting →</a>
+          Public releases need no GitHub login. <a href="docs/getting-started.html">Start-to-finish setup and troubleshooting →</a>
         </p>
 
         <div class="tabs" role="tablist" aria-label="Install method">
@@ -185,7 +201,7 @@ sl-dbg version</code></pre>
 # 3. Verify the archive BEFORE extracting it.
 # 4. Install the binary into a directory you own.</span></code></pre>
             </div>
-            <p class="muted">Choose the archive for your OS and architecture, not just the first download. <a href="docs.html?p=getting-started#manual-download">Manual download commands →</a> Checksums detect corruption; they are not release signatures.</p>
+            <p class="muted">Choose the archive for your OS and architecture, not just the first download. <a href="docs/getting-started.html#manual-download">Manual download commands →</a> Checksums detect corruption; they are not release signatures.</p>
           </div>
 
           <div class="tab-pane" data-pane="uninstall">
@@ -201,7 +217,7 @@ sl-dbg version</code></pre>
 <span class="prompt">$</span> sl-dbg mcp uninstall claude   <span class="dim"># or cursor | vscode | codex | copilot | all</span>
 <span class="prompt">$</span> sl-dbg mcp uninstall all --dry-run   <span class="dim"># preview first</span></code></pre>
             </div>
-            <p class="muted">Use the same <code>INSTALL_DIR</code> as installation. The script does not stop a running daemon or remove adapters, logs, caches, or backups. Workspace registrations need cleanup in each workspace. <a href="docs.html?p=getting-started#updates-and-uninstall">Update and uninstall safely →</a></p>
+            <p class="muted">Use the same <code>INSTALL_DIR</code> as installation. The script does not stop a running daemon or remove adapters, logs, caches, or backups. Workspace registrations need cleanup in each workspace. <a href="docs/getting-started.html#updates-and-uninstall">Update and uninstall safely →</a></p>
           </div>
         </div>
 
@@ -222,7 +238,7 @@ sl-dbg version</code></pre>
             <div class="adapter">
               <div class="adapter-lang">Java</div>
               <code>sl-dbg install-adapter java</code>
-              <p>Needs JDK 11+. Downloads the matching release JAR and verifies its SHA-256 sidecar; no Maven needed. <a href="docs.html?p=getting-started#java-release-installation">Java setup and upgrade notes →</a></p>
+              <p>Needs JDK 11+. Downloads the matching release JAR and verifies its SHA-256 sidecar; no Maven needed. <a href="docs/getting-started.html#java-release-installation">Java setup and upgrade notes →</a></p>
             </div>
             <div class="adapter all">
               <div class="adapter-lang">All</div>
@@ -238,7 +254,7 @@ sl-dbg version</code></pre>
       <div class="wrap">
         <p class="eyebrow">Quickstart</p>
         <h2>Pause a small Python program and inspect its total.</h2>
-        <p class="lede sm">After installing the CLI, run this in Bash or zsh. It creates a fresh scratch directory and virtual environment. Python with <code>venv</code> support is required. <a href="docs.html?p=getting-started#first-debug-session">Full walkthrough and expected results →</a></p>
+        <p class="lede sm">After installing the CLI, run this in Bash or zsh. It creates a fresh scratch directory and virtual environment. Python with <code>venv</code> support is required. <a href="docs/getting-started.html#first-debug-session">Full walkthrough and expected results →</a></p>
 
         <div class="example">
           <div class="example-title">Debug a Python script</div>
@@ -311,7 +327,7 @@ sl-dbg continue">Copy</button></div>
           sl-dbg speaks Model Context Protocol over stdio. Install a language adapter first,
           then preview and register one client. Registration edits that client’s configuration; it does not install the client.
         </p>
-        <p class="muted">v0.5.5 includes corrected VS Code and Copilot registration. See <a href="docs.html?p=getting-started#vs-code-and-copilot-configuration">client configuration details</a> for manual setup or migration from older versions.</p>
+        <p class="muted">v0.5.5 includes corrected VS Code and Copilot registration. See <a href="docs/getting-started.html#vs-code-and-copilot-configuration">client configuration details</a> for manual setup or migration from older versions.</p>
         <p class="muted">Run the example from the directory containing <code>sl-dbg-demo.py</code>. The program allowlist matches the target file, not <code>python3</code>; a bare registration can connect but reject a script launch.</p>
 
         <div class="two-col">
@@ -327,7 +343,7 @@ sl-dbg continue">Copy</button></div>
 <span class="dim"># Replace claude with cursor, vscode, codex, or copilot.
 # claude means Claude Desktop; vscode is workspace-scoped.</span></code></pre>
             </div>
-            <p class="muted">Restart your client after registration and confirm it lists sl-dbg’s tools. Existing files receive a timestamped backup; replacing an existing entry requires <code>--force</code>. <code>sl-dbg mcp install --print</code> prints configuration without editing files. <a href="docs.html?p=getting-started#connect-an-ai-agent">PATH, source-root, and client setup details →</a></p>
+            <p class="muted">Restart your client after registration and confirm it lists sl-dbg’s tools. Existing files receive a timestamped backup; replacing an existing entry requires <code>--force</code>. <code>sl-dbg mcp install --print</code> prints configuration without editing files. <a href="docs/getting-started.html#connect-an-ai-agent">PATH, source-root, and client setup details →</a></p>
           </div>
 
           <div>
@@ -338,19 +354,20 @@ sl-dbg continue">Copy</button></div>
 <span class="dim"># Remove --dry-run to register. Use --force only to replace
 # an existing entry you have reviewed.</span></code></pre>
             </div>
-            <p class="muted">Registration uses <code>--safe</code>. Read-only mode hides mutating tools, including starting a new session; it is not the mode for the first-session tutorial. These controls are not an OS sandbox: only debug code you trust, and review the <a href="docs.html?p=security">security limits</a>.</p>
+            <p class="muted">Registration uses <code>--safe</code>. Read-only mode hides mutating tools, including starting a new session; it is not the mode for the first-session tutorial. These controls are not an OS sandbox: only debug code you trust, and review the <a href="docs/security.html">security limits</a>.</p>
           </div>
         </div>
 
         <div class="resources">
           <h3>What an agent sees</h3>
+          <p>With a session already paused, ask the agent to inspect the call stack with <code>debug_stack</code>, then the selected frame’s variables with <code>debug_locals</code>. The terminal equivalents are <code>sl-dbg stack</code> and <code>sl-dbg locals</code>. These inspection calls do not resume the program.</p>
           <ul class="bullets">
             <li><strong>Tools</strong> — debugger operations (start, attach, break, continue, locals, eval, watch, …) with structured input schemas. Policy can restrict their use.</li>
             <li><strong>Resources</strong> — <code>sl-dbg://sessions</code>, <code>sl-dbg://events</code>, <code>sl-dbg://adapters</code> for live state without spending a tool call.</li>
             <li><strong>Prompts</strong> — turnkey templates like <code>diagnose_loop_bug</code>, <code>trace_call_path</code>, <code>watch_then_continue</code>.</li>
           </ul>
           <p class="muted" style="margin-top:14px;">
-            Full machine-readable reference: <a href="docs.html?p=mcp"><strong>MCP server docs</strong></a> · Security model: <a href="docs.html?p=security">threat model</a> · Source: <a href="https://github.com/y0geshpatil/sl-dbg" target="_blank" rel="noopener">github.com/y0geshpatil/sl-dbg</a>.
+            Full machine-readable reference: <a href="docs/mcp.html"><strong>MCP server docs</strong></a> · Security model: <a href="docs/security.html">threat model</a> · Source: <a href="https://github.com/y0geshpatil/sl-dbg" target="_blank" rel="noopener">github.com/y0geshpatil/sl-dbg</a>.
           </p>
         </div>
       </div>
@@ -443,7 +460,7 @@ sl-dbg continue">Copy</button></div>
             <tr><td>Windows</td><td>—</td><td><span class="warn">Not supported — open an issue if you need it</span></td></tr>
           </tbody>
         </table>
-        <p class="muted">A published binary is not a guarantee for every OS version, container, or adapter. See <a href="docs.html?p=platforms">platform notes</a> for runtime and debugging restrictions. Homebrew distribution is not currently enabled.</p>
+        <p class="muted">A published binary is not a guarantee for every OS version, container, or adapter. See <a href="docs/platforms.html">platform notes</a> for runtime and debugging restrictions. Homebrew distribution is not currently enabled.</p>
       </div>
     </section>
 
@@ -459,17 +476,17 @@ sl-dbg continue">Copy</button></div>
 
         <details>
           <summary>Do I need a GitHub account to install?</summary>
-          <p>No. Published release downloads are public. If installation returns HTTP 403 or 404, check the release tag, network access, and GitHub API rate limits. See <a href="docs.html?p=getting-started#troubleshooting">troubleshooting</a>.</p>
+          <p>No. Published release downloads are public. If installation returns HTTP 403 or 404, check the release tag, network access, and GitHub API rate limits. See <a href="docs/getting-started.html#troubleshooting">troubleshooting</a>.</p>
         </details>
 
         <details>
           <summary>How do I do a security review?</summary>
-          <p>Review the source, install scripts, release SHA-256 checksums, <a href="docs.html?p=mcp">MCP tool surface</a>, and <a href="docs.html?p=security">threat model</a>. Checksums are not signatures. Report vulnerabilities privately per <a href="https://github.com/y0geshpatil/sl-dbg/blob/main/SECURITY.md" target="_blank" rel="noopener">SECURITY.md</a>, not in public issues.</p>
+          <p>Review the source, install scripts, release SHA-256 checksums, <a href="docs/mcp.html">MCP tool surface</a>, and <a href="docs/security.html">threat model</a>. Checksums are not signatures. Report vulnerabilities privately per <a href="https://github.com/y0geshpatil/sl-dbg/blob/main/SECURITY.md" target="_blank" rel="noopener">SECURITY.md</a>, not in public issues.</p>
         </details>
 
         <details>
           <summary>What state lives on disk?</summary>
-          <p>The binary, language adapters, daemon files, logs, watch data, and any MCP configuration backups may remain on disk. Paths depend on your environment. Do not delete runtime files while sessions are active; see <a href="docs.html?p=getting-started#updates-and-uninstall">cleanup guidance</a>.</p>
+          <p>The binary, language adapters, daemon files, logs, watch data, and any MCP configuration backups may remain on disk. Paths depend on your environment. Do not delete runtime files while sessions are active; see <a href="docs/getting-started.html#updates-and-uninstall">cleanup guidance</a>.</p>
         </details>
 
         <details>
@@ -479,7 +496,7 @@ sl-dbg continue">Copy</button></div>
 
         <details>
           <summary>How do I uninstall?</summary>
-          <p>Finish debug sessions, close MCP clients, and follow the <a href="docs.html?p=getting-started#updates-and-uninstall">uninstall guide</a>. Match the original install directory and preview MCP cleanup before removing the binary. Adapters and cached data are separate.</p>
+          <p>Finish debug sessions, close MCP clients, and follow the <a href="docs/getting-started.html#updates-and-uninstall">uninstall guide</a>. Match the original install directory and preview MCP cleanup before removing the binary. Adapters and cached data are separate.</p>
         </details>
 
         <details>
@@ -493,7 +510,7 @@ sl-dbg continue">Copy</button></div>
       <div class="wrap narrow center">
         <h2>Ready to give your terminal — and your agents — a real debugger?</h2>
         <div class="cta-row center">
-          <a class="btn primary" href="docs.html?p=getting-started">Follow the setup guide</a>
+          <a class="btn primary" href="docs/getting-started.html">Follow the setup guide</a>
           <a class="btn ghost" href="https://github.com/y0geshpatil/sl-dbg/releases" target="_blank" rel="noopener">Browse releases →</a>
         </div>
       </div>
@@ -510,12 +527,12 @@ sl-dbg continue">Copy</button></div>
       <div class="foot-cols">
         <div>
           <h4>Docs</h4>
-          <a href="docs.html?p=getting-started">Getting started</a>
-          <a href="docs.html?p=mcp">MCP reference</a>
-          <a href="docs.html?p=agent-guide">AI agent guide</a>
-          <a href="docs.html?p=commands">CLI commands</a>
-          <a href="docs.html?p=adapters">Language adapters</a>
-          <a href="docs.html?p=configuration">Configuration design (planned)</a>
+          <a href="docs/getting-started.html">Getting started</a>
+          <a href="docs/mcp.html">MCP reference</a>
+          <a href="docs/agent-guide.html">AI agent guide</a>
+          <a href="docs/commands.html">CLI commands</a>
+          <a href="docs/adapters.html">Language adapters</a>
+          <a href="docs/configuration.html">Configuration design (planned)</a>
         </div>
         <div>
           <h4>Source</h4>
@@ -525,7 +542,7 @@ sl-dbg continue">Copy</button></div>
         </div>
         <div>
           <h4>Security</h4>
-          <a href="docs.html?p=security">Threat model</a>
+          <a href="docs/security.html">Threat model</a>
           <a href="https://github.com/y0geshpatil/sl-dbg/blob/main/SECURITY.md" target="_blank" rel="noopener">SECURITY.md</a>
         </div>
         <div>

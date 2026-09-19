@@ -1,0 +1,18 @@
+{
+  "name": "marked",
+  "version": "12.0.2",
+  "purpose": "Build-only copy of the exact parser already used by the legacy viewer",
+  "license": "MIT",
+  "files": [
+    {
+      "path": "vendor/marked-12.0.2.min.js",
+      "url": "https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js",
+      "sha256": "15fabce5b65898b32b03f5ed25e9f891a729ad4c0d6d877110a7744aa847a894"
+    },
+    {
+      "path": "vendor/marked-LICENSE.md",
+      "url": "https://cdn.jsdelivr.net/npm/marked@12.0.2/LICENSE.md",
+      "sha256": "8e3a3f82f59a60958f56ca08f445647c32a4733dc7ca6c2c46f6eb898471ab9c"
+    }
+  ]
+}
