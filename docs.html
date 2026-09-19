@@ -4,11 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="color-scheme" content="dark light" />
+  <!-- documentation-metadata:start -->
   <title>sl-dbg docs</title>
+  <meta name="description" content="Documentation for the sl-dbg debugger CLI and MCP server: installation, language adapters, commands, and security." />
+  <!-- documentation-metadata:end -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2310b981'/%3E%3Ctext x='32' y='44' font-family='ui-monospace,monospace' font-size='34' font-weight='800' text-anchor='middle' fill='%23052016'%3E_%3C/text%3E%3C/svg%3E" />
   <link rel="stylesheet" href="style.css" />
   <style>
-    .docs-shell { display: grid; grid-template-columns: 240px 1fr; gap: 40px; padding: 40px 0 80px; }
+    .docs-shell { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 40px; padding: 40px 28px 80px; }
     @media (max-width: 800px) {
       .docs-shell { grid-template-columns: minmax(0, 1fr); gap: 28px; }
       .docs-shell .docs-side { position: static; border-right: 0; border-bottom: 1px solid var(--border); padding: 0 0 24px; }
@@ -52,7 +55,7 @@
         <a href="./#install">Install</a>
         <a href="./#quickstart">Quickstart</a>
         <a href="./#agents">Agents</a>
-        <a href="docs.html?p=getting-started" class="nav-cta">Docs</a>
+        <a href="docs/getting-started.html" class="nav-cta">Docs</a>
         <a href="https://github.com/y0geshpatil/sl-dbg" target="_blank" rel="noopener">GitHub ↗</a>
       </div>
     </div>
@@ -61,20 +64,20 @@
   <main class="wrap docs-shell">
     <aside class="docs-side">
       <h4>Get started</h4>
-      <a data-doc="getting-started" href="?p=getting-started">Installation &amp; first session</a>
-      <a data-doc="adapters" href="?p=adapters">Language adapters</a>
-      <a data-doc="mcp" href="?p=mcp">MCP server reference</a>
-      <a data-doc="agent-guide" href="?p=agent-guide">AI agent guide</a>
-      <a data-doc="commands" href="?p=commands">CLI commands</a>
+      <a data-doc="getting-started" href="docs/getting-started.html">Installation &amp; first session</a>
+      <a data-doc="adapters" href="docs/adapters.html">Language adapters</a>
+      <a data-doc="mcp" href="docs/mcp.html">MCP server reference</a>
+      <a data-doc="agent-guide" href="docs/agent-guide.html">AI agent guide</a>
+      <a data-doc="commands" href="docs/commands.html">CLI commands</a>
 
       <h4>Operate</h4>
-      <a data-doc="configuration" href="?p=configuration">Configuration design (planned)</a>
-      <a data-doc="platforms" href="?p=platforms">Platforms</a>
-      <a data-doc="design" href="?p=design">Architecture / design notes</a>
+      <a data-doc="configuration" href="docs/configuration.html">Configuration design (planned)</a>
+      <a data-doc="platforms" href="docs/platforms.html">Platforms</a>
+      <a data-doc="design" href="docs/design.html">Architecture / design notes</a>
 
       <h4>Security</h4>
-      <a data-doc="security" href="?p=security">Threat model</a>
-      <a data-doc="security-review" href="?p=security-review">Reviewing releases</a>
+      <a data-doc="security" href="docs/security.html">Threat model</a>
+      <a data-doc="security-review" href="docs/security-review.html">Reviewing releases</a>
 
       <h4>Source</h4>
       <a href="https://github.com/y0geshpatil/sl-dbg" target="_blank" rel="noopener">Repository ↗</a>
@@ -84,7 +87,7 @@
 
     <article id="content" class="docs-main" aria-busy="true" tabindex="-1">
       <p class="docs-err" role="status">Loading documentation…</p>
-      <noscript><p>JavaScript is needed for the viewer. Read the <a href="docs/getting-started.md">setup guide as Markdown</a> or browse <a href="https://github.com/y0geshpatil/sl-dbg/tree/main/docs">the source documentation</a>.</p></noscript>
+      <noscript><p>This legacy viewer needs JavaScript. The navigation links open full HTML documents, including the <a href="docs/getting-started.html">setup guide</a>, without JavaScript.</p></noscript>
     </article>
   </main>
 
@@ -98,7 +101,7 @@
         <div>
           <a href="https://github.com/y0geshpatil/sl-dbg" target="_blank" rel="noopener">Source</a>
           <a href="https://github.com/y0geshpatil/sl-dbg/releases">Releases</a>
-          <a href="docs.html?p=security-review">Security review</a>
+          <a href="docs/security-review.html">Security review</a>
         </div>
       </div>
     </div>
